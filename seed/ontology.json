@@ -1,0 +1,14 @@
+{
+  "entities": [
+    "Project", "Tender", "Client", "Contact", "Subcontractor", "Trade",
+    "Document", "Drawing", "RFI", "Variation", "Claim", "Contract",
+    "Meeting", "Task", "Risk", "Decision", "LessonLearned"
+  ],
+  "edges": [
+    "HAS_TENDER", "FOR_CLIENT", "HAS_CONTRACT", "HAS_DOCUMENT", "HAS_RFI",
+    "HAS_VARIATION", "HAS_CLAIM", "HAS_RISK", "HAS_DECISION", "HAS_LESSON",
+    "HAS_MEETING", "HAS_TASK", "REFERS_TO_DRAWING", "AMENDS", "SUPPORTED_BY",
+    "SUPERSEDES", "DELIVERS_TRADE", "ON_PROJECT", "WORKS_AT",
+    "INGESTED_FROM", "ATTENDED_BY"
+  ]
+}

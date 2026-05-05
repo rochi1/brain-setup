@@ -1,0 +1,17 @@
+{
+  "tenant": {
+    "slug": "demo",
+    "name": "Demo Tenant",
+    "region": "au",
+    "isolation_tier": "logical"
+  },
+  "users": [
+    {"email": "admin@example.com", "display_name": "Admin"},
+    {"email": "estimator@example.com", "display_name": "Estimator"}
+  ],
+  "agents": [
+    {"name": "tenders", "role_name": "agent_tenders"},
+    {"name": "contracts", "role_name": "agent_contracts"},
+    {"name": "site", "role_name": "agent_site"}
+  ]
+}

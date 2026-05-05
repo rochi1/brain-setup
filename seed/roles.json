@@ -1,0 +1,8 @@
+{
+  "roles": [
+    "tenant_admin", "project_lead", "contributor", "reader", "auditor",
+    "agent_tenders", "agent_contracts", "agent_finance", "agent_design",
+    "agent_site", "agent_procurement", "agent_hr", "agent_boq",
+    "connector_runner", "platform_admin"
+  ]
+}

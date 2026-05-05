@@ -1,0 +1,74 @@
+version: "3.9"
+
+# Local-only stack for the Superbrain.
+# This is the smallest set of services that lets the API + ingestion run
+# end-to-end. Replace placeholders (Cognee/Graphiti/Mem0) with real images
+# when wiring up Phase 2.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: brain-postgres
+    environment:
+      POSTGRES_USER: brain
+      POSTGRES_PASSWORD: brain
+      POSTGRES_DB: brain
+    ports:
+      - "5432:5432"
+    volumes:
+      - brain-pg:/var/lib/postgresql/data
+      - ../../migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U brain"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Placeholder for Cognee.
+  # Replace with the real Cognee container image once you've chosen a release.
+  cognee:
+    image: alpine:3.19
+    container_name: brain-cognee
+    command: ["sh", "-c", "echo 'Cognee placeholder — wire real image' && sleep infinity"]
+
+  # Placeholder for Graphiti backend (Neo4j).
+  graphiti:
+    image: neo4j:5-community
+    container_name: brain-graphiti
+    environment:
+      NEO4J_AUTH: neo4j/changeme
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - brain-neo4j:/data
+
+  # Placeholder for Mem0.
+  mem0:
+    image: alpine:3.19
+    container_name: brain-mem0
+    command: ["sh", "-c", "echo 'Mem0 placeholder — wire real image' && sleep infinity"]
+
+  api:
+    build:
+      context: ../../
+      dockerfile: infra/docker/Dockerfile.api
+    container_name: brain-api
+    env_file:
+      - ../../.env.example
+    environment:
+      POSTGRES_DSN: postgresql://brain:brain@postgres:5432/brain
+      GRAPHITI_URL: bolt://graphiti:7687
+      GRAPHITI_PASSWORD: changeme
+      COGNEE_URL: http://cognee:8001
+      MEM0_URL: http://mem0:8002
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  brain-pg:
+  brain-neo4j:
