@@ -10,6 +10,7 @@ This repository contains the AI context and prompt library for a business. Befor
 - **What we sell:** See `your-business/context/PRODUCTS_SERVICES.md`
 - **Our market position:** See `your-business/context/COMPETITORS.md`
 - **Combined context prompt:** See `your-business/prompts/MASTER_PROMPT.md`
+- **Custom roles:** See `your-business/prompts/ROLES.md`
 
 ## Standing Rules
 

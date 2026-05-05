@@ -266,7 +266,7 @@ I have a template I need you to fill in — I'll paste it at the end of this mes
 
 Here is the template:
 
-[PASTE CONTENTS OF templates/context/COMPETITORS.md HERE]
+[PASTE CONTENTS OF templates/context/COMPETITORS.md HERE or upload directly]
 ```
 
 ---
@@ -274,7 +274,6 @@ Here is the template:
 ## Tips
 
 - **Paste the whole template.** Don't trim the template before pasting it into the prompt — the headings and structure are what tells the AI what to cover.
-- **Save the output back over the template.** Your completed file should live in the same path as the template. The template text is replaced by your real content.
 - **Don't overthink your answers.** These are living documents — update them as your thinking evolves. Getting something down is more valuable than getting it perfect.
 - **Do it as a team.** Getting input from sales, marketing, and ops in Step 2 produces a much better brand voice than one person's view.
 - **Re-run any prompt anytime.** If your business changes, redo the relevant step and paste the current file as the template — the AI will update it in the same format.

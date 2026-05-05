@@ -12,6 +12,7 @@ Read the following files. They are your source of truth for everything about thi
 
 ```
 your-business/prompts/MASTER_PROMPT.md   ← Start here — combined context in one file
+your-business/prompts/ROLES.md           ← Custom roles — apply when a task specifies a role
 your-business/context/BUSINESS_PROFILE.md ← Who we are
 your-business/context/BRAND_VOICE.md     ← How we sound
 your-business/context/AUDIENCE.md        ← Who we serve

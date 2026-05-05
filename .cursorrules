@@ -12,6 +12,7 @@ Before responding to any task in this workspace, read and apply the following co
 4. `your-business/context/PRODUCTS_SERVICES.md` — what we sell, how to describe it, what not to promise
 5. `your-business/context/COMPETITORS.md` — market positioning and competitive context
 6. `your-business/prompts/MASTER_PROMPT.md` — the single combined context prompt (read this if you read nothing else)
+7. `your-business/prompts/ROLES.md` — custom role definitions for this business (use when a task calls for a specific role)
 
 ### Standing instructions:
 

@@ -11,6 +11,7 @@ You are working inside the AI Business Template Kit for a specific business. The
 | File | What it contains | Priority |
 |------|-----------------|----------|
 | `your-business/prompts/MASTER_PROMPT.md` | Single combined context prompt — read this first | Highest |
+| `your-business/prompts/ROLES.md` | Custom role definitions — apply when a task specifies a role | High |
 | `your-business/context/BUSINESS_PROFILE.md` | Business identity, mission, values, operations | High |
 | `your-business/context/BRAND_VOICE.md` | Voice, tone, language rules, DO/DON’T | High |
 | `your-business/context/AUDIENCE.md` | Customer personas, lifecycle, real quotes | High |

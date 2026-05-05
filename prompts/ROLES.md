@@ -220,6 +220,8 @@ Always state: what was measured, over what period, and what the key limitation o
 
 ## How to Create a Custom Role
 
+**Save generated roles to:** `your-business/prompts/ROLES.md` — that's what gets loaded into your AI tools alongside your Master Prompt.
+
 ### Option A — Generate with AI (recommended)
 
 Copy and paste the prompt below into any AI tool. It will interview you and build the role for you — no technical knowledge needed.
