@@ -2,7 +2,7 @@
 
 > **How to use this file:** Fill in each section below. Delete any placeholder text in *italics* and replace it with your own. This file is loaded into AI tools to give them a complete understanding of who your business is. Keep it factual and in third person.
 >
-> **First time?** Use the Business Profile prompt in [onboarding/QUICK_START.md](../onboarding/QUICK_START.md) — an AI will interview you and generate this file automatically.
+> **First time?** Use the Business Profile prompt in [onboarding/QUICK_START.md](../../onboarding/QUICK_START.md) — an AI will interview you and generate this file automatically.
 
 ---
 

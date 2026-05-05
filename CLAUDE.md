@@ -4,28 +4,28 @@ This file is read automatically by Claude Code and Claude-based agents when work
 
 ## Context
 
-You are working inside the AI Business Template Kit for a specific business. All relevant business context — identity, voice, audience, products, and competitive position — is documented in the `context/` folder.
+You are working inside the AI Business Template Kit for a specific business. All relevant business context — identity, voice, audience, products, and competitive position — is documented in the `your-business/` folder.
 
 ## Before Any Task
 
 Read the following files. They are your source of truth for everything about this business:
 
 ```
-prompts/MASTER_PROMPT.md          ← Start here — combined context in one file
-context/BUSINESS_PROFILE.md      ← Who we are
-context/BRAND_VOICE.md           ← How we sound
-context/AUDIENCE.md              ← Who we serve
-context/PRODUCTS_SERVICES.md     ← What we sell
-context/COMPETITORS.md           ← Where we sit in the market
+your-business/prompts/MASTER_PROMPT.md   ← Start here — combined context in one file
+your-business/context/BUSINESS_PROFILE.md ← Who we are
+your-business/context/BRAND_VOICE.md     ← How we sound
+your-business/context/AUDIENCE.md        ← Who we serve
+your-business/context/PRODUCTS_SERVICES.md ← What we sell
+your-business/context/COMPETITORS.md     ← Where we sit in the market
 ```
 
 ## Non-Negotiable Rules
 
-**Voice:** Every piece of written output must follow the tone, language rules, and DO/DON'T guidelines in `context/BRAND_VOICE.md`. This applies regardless of how the user phrases their request.
+**Voice:** Every piece of written output must follow the tone, language rules, and DO/DON’T guidelines in `your-business/context/BRAND_VOICE.md`. This applies regardless of how the user phrases their request.
 
-**Facts:** Never describe a product feature, pricing detail, or capability that isn't documented in `context/PRODUCTS_SERVICES.md`. If you don't know, say so and ask.
+**Facts:** Never describe a product feature, pricing detail, or capability that isn’t documented in `your-business/context/PRODUCTS_SERVICES.md`. If you don't know, say so and ask.
 
-**Audience:** Default to the primary customer persona in `context/AUDIENCE.md` when no specific audience is stated.
+**Audience:** Default to the primary customer persona in `your-business/context/AUDIENCE.md` when no specific audience is stated.
 
 **Conflicts:** If a request conflicts with the documented voice, values, or product facts — flag it briefly and suggest an alternative approach.
 

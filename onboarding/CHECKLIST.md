@@ -11,24 +11,24 @@ These four outputs are the minimum viable setup. Everything else can come later.
 ### Business Profile
 - [ ] Ran the Business Profile prompt from [QUICK_START.md](QUICK_START.md)
 - [ ] Reviewed and edited the output — it accurately describes the business
-- [ ] Saved as `context/BUSINESS_PROFILE.md`
+- [ ] Saved as `your-business/context/BUSINESS_PROFILE.md`
 
 ### Brand Voice
 - [ ] Ran the Brand Voice prompt from [QUICK_START.md](QUICK_START.md)
-- [ ] Reviewed the DO/DON'T table — it reflects how we actually communicate
+- [ ] Reviewed the DO/DON’T table — it reflects how we actually communicate
 - [ ] Tested the before/after rewrites — they sound like us
-- [ ] Saved as `context/BRAND_VOICE.md`
+- [ ] Saved as `your-business/context/BRAND_VOICE.md`
 
 ### Master Prompt
 - [ ] Generated the Master Prompt using outputs from Phase 1
 - [ ] Tested it: started a fresh AI conversation, pasted the Master Prompt, asked a business-related question — the tone and context were correct
-- [ ] Saved as `prompts/MASTER_PROMPT.md`
+- [ ] Saved as `your-business/prompts/MASTER_PROMPT.md`
 - [ ] Shared with the team (Slack pin, Notion, internal wiki, etc.)
 
 ### AI Policy
 - [ ] Ran the AI Policy prompt from [QUICK_START.md](QUICK_START.md)
 - [ ] Reviewed with at least one other person (manager, legal, or senior team member)
-- [ ] Saved as `governance/AI_POLICY.md`
+- [ ] Saved as `your-business/governance/AI_POLICY.md`
 - [ ] Team has read and acknowledged the policy
 
 **Phase 1 complete?** You have a working AI foundation. The rest makes it sharper.
@@ -38,17 +38,17 @@ These four outputs are the minimum viable setup. Everything else can come later.
 ## Phase 2 — Context Depth (Complete within first 2 weeks)
 
 ### Audience
-- [ ] `context/AUDIENCE.md` exists with at least 2 customer personas
+- [ ] `your-business/context/AUDIENCE.md` exists with at least 2 customer personas
 - [ ] Each persona includes: who they are, what they need, what they fear, how they talk
 - [ ] Master Prompt updated to reference audience context
 
 ### Products & Services
-- [ ] `context/PRODUCTS_SERVICES.md` exists
+- [ ] `your-business/context/PRODUCTS_SERVICES.md` exists
 - [ ] Each product/service has: name, description, who it's for, key benefits, pricing range (if appropriate)
 - [ ] Common objections and how to handle them are documented
 
 ### Competitors & Positioning
-- [ ] `context/COMPETITORS.md` exists
+- [ ] `your-business/context/COMPETITORS.md` exists
 - [ ] Includes 3–5 competitors with brief descriptions
 - [ ] Our differentiation vs. each is clearly stated
 - [ ] Positioning statement written and agreed on
@@ -100,7 +100,7 @@ Work through [SETUP_GUIDE.md](SETUP_GUIDE.md) for each tool your team uses:
 Run this quick test monthly to confirm your AI setup is still working well:
 
 1. Open a fresh AI conversation
-2. Paste your `MASTER_PROMPT.md`
+2. Paste your `your-business/prompts/MASTER_PROMPT.md`
 3. Ask: *"Write a 3-sentence intro for a new product email to our customers."*
 4. Ask: *"Describe what our business does to someone who's never heard of us."*
 5. Ask: *"What are we not a good fit for?"*

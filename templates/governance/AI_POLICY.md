@@ -2,7 +2,7 @@
 
 > **What this file is:** A template for your internal AI policy — the rules that govern how your team uses AI tools day to day. Clear, practical, and written for non-technical readers.
 >
-> **How to generate your version:** Follow Step 4 in [onboarding/QUICK_START.md](../onboarding/QUICK_START.md). Paste this template into the prompt — the AI will interview you and fill it in with your specific rules, tools, and compliance requirements.
+> **How to generate your version:** Follow Step 4 in [onboarding/QUICK_START.md](../../onboarding/QUICK_START.md). Paste this template into the prompt — the AI will interview you and fill it in with your specific rules, tools, and compliance requirements.
 >
 > **After generating:** Delete everything above the `---` and retain the completed policy below. Share it with your team and include a sign-off record at the bottom.
 

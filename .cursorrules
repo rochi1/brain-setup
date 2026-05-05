@@ -6,18 +6,18 @@ Before responding to any task in this workspace, read and apply the following co
 
 ### Required reading — load these files before every task:
 
-1. `context/BUSINESS_PROFILE.md` — who we are, what we do, our mission and values
-2. `context/BRAND_VOICE.md` — how we communicate, tone rules, do/don't guidelines
-3. `context/AUDIENCE.md` — who our customers are and how they think
-4. `context/PRODUCTS_SERVICES.md` — what we sell, how to describe it, what not to promise
-5. `context/COMPETITORS.md` — market positioning and competitive context
-6. `prompts/MASTER_PROMPT.md` — the single combined context prompt (read this if you read nothing else)
+1. `your-business/context/BUSINESS_PROFILE.md` — who we are, what we do, our mission and values
+2. `your-business/context/BRAND_VOICE.md` — how we communicate, tone rules, do/don't guidelines
+3. `your-business/context/AUDIENCE.md` — who our customers are and how they think
+4. `your-business/context/PRODUCTS_SERVICES.md` — what we sell, how to describe it, what not to promise
+5. `your-business/context/COMPETITORS.md` — market positioning and competitive context
+6. `your-business/prompts/MASTER_PROMPT.md` — the single combined context prompt (read this if you read nothing else)
 
 ### Standing instructions:
 
-- Always write in the voice defined in `context/BRAND_VOICE.md`
-- Never invent features, pricing, or capabilities not documented in `context/PRODUCTS_SERVICES.md`
-- When the audience is unspecified, default to the primary persona in `context/AUDIENCE.md`
+- Always write in the voice defined in `your-business/context/BRAND_VOICE.md`
+- Never invent features, pricing, or capabilities not documented in `your-business/context/PRODUCTS_SERVICES.md`
+- When the audience is unspecified, default to the primary persona in `your-business/context/AUDIENCE.md`
 - If a task conflicts with our values or voice, flag it and suggest an alternative
 - Apply these rules to all tasks: writing, editing, analysis, strategy, code comments, and documentation
 - Do not add filler phrases ("Certainly!", "Great question!", "As an AI...")

@@ -12,9 +12,9 @@ No technical setup required. Just a business, an AI tool, and this guide.
 You'll need:
 - Access to any AI tool (ChatGPT, Claude, Gemini, Copilot, or similar)
 - A basic understanding of your business (you don't need anything written down yet — the prompts will draw it out of you)
-- This repo cloned or downloaded locally — the template files in `context/`, `prompts/`, and `governance/` are used directly in the prompts below
+- This repo cloned or downloaded locally — the blank template files live in `templates/` and your filled-in files will be saved to `your-business/`
 
-**How it works:** Each step asks you to paste the corresponding template file into the prompt. The AI fills in the structure for you — then you save that completed file back over the template. This keeps all outputs in a consistent, predictable format across every business that uses this repo.
+**How it works:** Each step asks you to paste the corresponding blank template from `templates/` into the prompt. The AI fills in the structure for you — then you save the completed file into `your-business/`. This keeps your business context clearly separated from the repo's setup files and makes it easy to upload, share, or load into any AI tool.
 
 Work through the prompts **in order**. Each one builds on the last.
 
@@ -23,10 +23,10 @@ Work through the prompts **in order**. Each one builds on the last.
 ## Step 1 of 4 — Business Profile
 
 **What it does:** Creates the foundational "who we are" document every other file references.  
-**Template:** `context/BUSINESS_PROFILE.md`  
-**Save output to:** `context/BUSINESS_PROFILE.md` (overwrite the template with your completed version)
+**Template:** `templates/context/BUSINESS_PROFILE.md`  
+**Save output to:** `your-business/context/BUSINESS_PROFILE.md`
 
-**Before running this prompt:** Open `context/BUSINESS_PROFILE.md` and copy its full contents. You'll paste it into the prompt below.
+**Before running this prompt:** Open `templates/context/BUSINESS_PROFILE.md` and copy its full contents. You'll paste it into the prompt below.
 
 ```
 I'm setting up a context file so AI tools understand my business.
@@ -41,7 +41,7 @@ Write all content in third person so it reads as a reference document, not a per
 
 Here is the template:
 
-[PASTE CONTENTS OF context/BUSINESS_PROFILE.md HERE]
+[PASTE CONTENTS OF templates/context/BUSINESS_PROFILE.md HERE]
 ```
 
 ---
@@ -49,7 +49,7 @@ Here is the template:
 ## Step 2 of 4 — Brand Voice
 
 **What it does:** Captures how you communicate, so AI always writes in your voice — not a generic one.  
-**Save output to:** `context/BRAND_VOICE.md`
+**Save output to:** `your-business/context/BRAND_VOICE.md`
 
 **Already have a brand guide or style guide?** Use **Prompt 2A** — upload or paste it and the AI will extract what it needs, then only ask questions about anything missing. Starting from scratch? Skip to **Prompt 2B**.
 
@@ -57,7 +57,7 @@ Here is the template:
 
 ### Prompt 2A — Extract from an existing brand guide
 
-**Before running this prompt:** Open `context/BRAND_VOICE.md` and copy its full contents. You'll paste it into the prompt below alongside your existing brand guide.
+**Before running this prompt:** Open `templates/context/BRAND_VOICE.md` and copy its full contents. You'll paste it into the prompt below alongside your existing brand guide.
 
 ```
 I'm going to share two things: my existing brand guide and a template I need filled in.
@@ -79,14 +79,14 @@ Here is my brand guide:
 
 Here is the template to fill in:
 
-[PASTE CONTENTS OF context/BRAND_VOICE.md HERE]
+[PASTE CONTENTS OF templates/context/BRAND_VOICE.md HERE]
 ```
 
 ---
 
 ### Prompt 2B — Build brand voice from scratch
 
-**Before running this prompt:** Open `context/BRAND_VOICE.md` and copy its full contents. You'll paste it into the prompt below.
+**Before running this prompt:** Open `templates/context/BRAND_VOICE.md` and copy its full contents. You'll paste it into the prompt below.
 
 ```
 I need to define my brand voice so AI tools write consistently for my business.
@@ -102,7 +102,7 @@ I have a template I need you to fill in — I'll paste it at the end of this mes
 
 Here is the template:
 
-[PASTE CONTENTS OF context/BRAND_VOICE.md HERE]
+[PASTE CONTENTS OF templates/context/BRAND_VOICE.md HERE]
 ```
 
 ---
@@ -110,10 +110,10 @@ Here is the template:
 ## Step 3 of 4 — Master Prompt
 
 **What it does:** Combines your context into a single reusable prompt — the one thing your team pastes at the start of any AI session.  
-**Template:** `prompts/MASTER_PROMPT.md`  
-**Save output to:** `prompts/MASTER_PROMPT.md` (overwrite the template with your completed version)
+**Template:** `templates/prompts/MASTER_PROMPT.md`  
+**Save output to:** `your-business/prompts/MASTER_PROMPT.md`
 
-**Before running this prompt:** Open `prompts/MASTER_PROMPT.md` and copy its full contents. Also copy the contents of every context file you've completed so far.
+**Before running this prompt:** Open `templates/prompts/MASTER_PROMPT.md` and copy its full contents. Also copy the contents of every context file you've completed so far.
 
 ```
 I've completed my business context files. I'm going to paste them below, along with a Master Prompt template.
@@ -127,21 +127,21 @@ Your job is to:
 
 Here is the Master Prompt template to fill in:
 
-[PASTE CONTENTS OF prompts/MASTER_PROMPT.md HERE]
+[PASTE CONTENTS OF templates/prompts/MASTER_PROMPT.md HERE]
 
 ---
 
 Here are my completed context files:
 
-[PASTE CONTENTS OF context/BUSINESS_PROFILE.md HERE]
+[PASTE CONTENTS OF your-business/context/BUSINESS_PROFILE.md HERE]
 
 ---
 
-[PASTE CONTENTS OF context/BRAND_VOICE.md HERE]
+[PASTE CONTENTS OF your-business/context/BRAND_VOICE.md HERE]
 
 ---
 
-[PASTE ANY OTHER COMPLETED CONTEXT FILES HERE — AUDIENCE.md, PRODUCTS_SERVICES.md, COMPETITORS.md]
+[PASTE ANY OTHER COMPLETED CONTEXT FILES HERE — your-business/context/AUDIENCE.md, your-business/context/PRODUCTS_SERVICES.md, your-business/context/COMPETITORS.md]
 ```
 
 ---
@@ -149,10 +149,10 @@ Here are my completed context files:
 ## Step 4 of 4 — AI Policy
 
 **What it does:** Sets the rules for how your team uses AI — what's approved, what needs review, and what's off-limits.  
-**Template:** `governance/AI_POLICY.md`  
-**Save output to:** `governance/AI_POLICY.md` (overwrite the template with your completed version)
+**Template:** `templates/governance/AI_POLICY.md`  
+**Save output to:** `your-business/governance/AI_POLICY.md`
 
-**Before running this prompt:** Open `governance/AI_POLICY.md` and copy its full contents. You'll paste it into the prompt below.
+**Before running this prompt:** Open `templates/governance/AI_POLICY.md` and copy its full contents. You'll paste it into the prompt below.
 
 ```
 I need a practical internal AI policy for my business.
@@ -168,7 +168,7 @@ I have a template I need you to fill in — I'll paste it at the end of this mes
 
 Here is the template:
 
-[PASTE CONTENTS OF governance/AI_POLICY.md HERE]
+[PASTE CONTENTS OF templates/governance/AI_POLICY.md HERE]
 ```
 
 ---
@@ -177,10 +177,10 @@ Here is the template:
 
 Once you have all four files saved:
 
-1. **Share `prompts/MASTER_PROMPT.md`** with your team as the standard starting point for any AI task
+1. **Share `your-business/prompts/MASTER_PROMPT.md`** with your team as the standard starting point for any AI task
 2. **Add files to your AI tool's project/knowledge base** — see [SETUP_GUIDE.md](SETUP_GUIDE.md) for tool-specific instructions
 3. **Work through [CHECKLIST.md](CHECKLIST.md)** to confirm your setup is complete
-4. **Fill in the remaining template files** in `context/` and `processes/` as you have time — each one makes your AI more accurate and useful
+4. **Fill in the remaining template files** in `templates/` as you go — each one makes your AI more accurate and useful. Save your completed versions to `your-business/`
 
 ---
 

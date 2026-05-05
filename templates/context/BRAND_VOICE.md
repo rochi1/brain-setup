@@ -1,6 +1,6 @@
 # Brand Voice
 
-> **How to use this file:** This defines how your business communicates — tone, language rules, and style. AI tools use it to write in your voice rather than a generic one. Fill in each section, or generate this file automatically using the Brand Voice prompts in [onboarding/QUICK_START.md](../onboarding/QUICK_START.md).
+> **How to use this file:** This defines how your business communicates — tone, language rules, and style. AI tools use it to write in your voice rather than a generic one. Fill in each section, or generate this file automatically using the Brand Voice prompts in [onboarding/QUICK_START.md](../../onboarding/QUICK_START.md).
 >
 > **Already have a brand guide?** Use Prompt 2A in QUICK_START.md to extract this automatically.
 

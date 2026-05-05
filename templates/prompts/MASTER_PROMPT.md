@@ -2,7 +2,7 @@
 
 > **What this file is:** A single reusable prompt that loads your full business context at the start of any AI conversation. Once generated, this is the thing your team copies and pastes — or loads as a system prompt — every time they use an AI tool for business tasks.
 >
-> **How to generate your version:** Follow Step 3 in [onboarding/QUICK_START.md](../onboarding/QUICK_START.md). Paste this template into the prompt along with your completed context files. The AI will fill in every section using your real business information.
+> **How to generate your version:** Follow Step 3 in [onboarding/QUICK_START.md](../../onboarding/QUICK_START.md). Paste this template into the prompt along with your completed context files. The AI will fill in every section using your real business information.
 >
 > **After generating:** Delete everything above the horizontal rule below, and save your completed prompt starting from the `---`.
 

@@ -43,7 +43,7 @@ After all personas are captured, ask:
 
 Once I've answered everything, produce a completed AUDIENCE.md using exactly the structure below. Replace all italic placeholder text with real content. Preserve all headings exactly. Output only the completed file — no explanation needed.
 
-[PASTE CONTENTS OF context/AUDIENCE.md HERE]
+[PASTE CONTENTS OF your-business/context/AUDIENCE.md HERE]
 ```
 
 ---

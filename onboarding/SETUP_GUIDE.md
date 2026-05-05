@@ -6,7 +6,7 @@
 
 ## The Core Idea
 
-Your `context/` folder is the source of truth. The goal is to get that context into whatever AI tool you're using so you don't have to re-explain your business in every conversation.
+Your `your-business/` folder is the source of truth. The goal is to get that context into whatever AI tool you're using so you don't have to re-explain your business in every conversation.
 
 How you do that depends on the tool.
 
@@ -25,7 +25,7 @@ If you're using a coding or agent tool (Cursor, Windsurf, GitHub Copilot, Claude
 | `CLAUDE.md` | Claude Code / Claude-based agents |
 
 **What you need to do:**
-1. Make sure your `context/` files are filled in (see [QUICK_START.md](QUICK_START.md))
+1. Make sure your `your-business/` files are filled in (see [QUICK_START.md](QUICK_START.md))
 2. That's it — the agent will read and apply your business context automatically
 
 **Important:** These auto-load files point to your context store but do not replace it. Keep your context files accurate and up to date; that's what the agent actually reads.
@@ -39,18 +39,18 @@ If you're using a coding or agent tool (Cursor, Windsurf, GitHub Copilot, Claude
 ### Option A — ChatGPT Projects (recommended)
 1. Open ChatGPT and create a new **Project**
 2. Name it after your business
-3. In the project settings, upload your context files:
+3. In the project settings, upload your context files from `your-business/context/`:
    - `BUSINESS_PROFILE.md`
    - `BRAND_VOICE.md`
    - `AUDIENCE.md`
    - `PRODUCTS_SERVICES.md`
-4. Add your `MASTER_PROMPT.md` content into the **Custom Instructions** field of the project
+4. Add your `your-business/prompts/MASTER_PROMPT.md` content into the **Custom Instructions** field of the project
 5. All conversations inside this project will automatically use your context
 
 ### Option B — Custom Instructions (global)
 1. Click your profile icon → **Customize ChatGPT**
-2. In the "What would you like ChatGPT to know about you?" field, paste a condensed version of your `BUSINESS_PROFILE.md`
-3. In the "How would you like ChatGPT to respond?" field, paste your `BRAND_VOICE.md` guidelines
+2. In the "What would you like ChatGPT to know about you?" field, paste a condensed version of your `your-business/context/BUSINESS_PROFILE.md`
+3. In the "How would you like ChatGPT to respond?" field, paste your `your-business/context/BRAND_VOICE.md` guidelines
 4. This applies to all conversations, not just one project
 
 ### Option C — Paste per session
@@ -62,8 +62,8 @@ Paste your `MASTER_PROMPT.md` at the start of any new conversation where you nee
 
 ### Claude Projects (recommended)
 1. Open Claude and create a new **Project**
-2. Go to **Project Knowledge** and upload your context files
-3. Add your `MASTER_PROMPT.md` as the project's system prompt
+2. Go to **Project Knowledge** and upload your context files from `your-business/context/`
+3. Add your `your-business/prompts/MASTER_PROMPT.md` as the project's system prompt
 4. All conversations in the project will use this context
 
 ### Per-session

@@ -33,20 +33,31 @@ ai-template/
 ├── .github/
 │   └── copilot-instructions.md  ← Auto-loaded by GitHub Copilot
 │
+├── your-business/               ← YOUR FILES — fill these in, then load into your AI
+│   ├── README.md                ← How to use this folder
+│   ├── context/
+│   │   ├── BUSINESS_PROFILE.md  ← Who you are, what you do, your mission
+│   │   ├── BRAND_VOICE.md       ← Tone, language rules, examples
+│   │   ├── AUDIENCE.md          ← Customer personas and segments
+│   │   ├── PRODUCTS_SERVICES.md ← What you sell and how to describe it
+│   │   └── COMPETITORS.md       ← Market context and positioning
+│   ├── prompts/
+│   │   └── MASTER_PROMPT.md     ← The combined context prompt your team uses
+│   └── governance/
+│       ├── AI_POLICY.md         ← Your team's rules for using AI
+│       └── DATA_RULES.md        ← What data is safe to share with AI tools
+│
+├── templates/                   ← Blank reference templates (read-only)
+│   ├── context/                 ← Blank versions of all context files
+│   ├── prompts/                 ← Blank Master Prompt template
+│   └── governance/              ← Blank policy templates
+│
 ├── onboarding/
 │   ├── QUICK_START.md           ← Start here — 4 prompts to set everything up
 │   ├── SETUP_GUIDE.md           ← Step-by-step onboarding walkthrough
 │   └── CHECKLIST.md             ← Onboarding completion checklist
 │
-├── context/
-│   ├── BUSINESS_PROFILE.md      ← Who you are, what you do, your mission
-│   ├── BRAND_VOICE.md           ← Tone, language rules, examples
-│   ├── AUDIENCE.md              ← Customer personas and segments
-│   ├── PRODUCTS_SERVICES.md     ← What you sell and how you describe it
-│   └── COMPETITORS.md           ← Market context and positioning
-│
 ├── prompts/
-│   ├── MASTER_PROMPT.md         ← The single prompt that loads all context
 │   ├── ROLES.md                 ← Reusable role definitions (marketer, analyst, etc.)
 │   └── TASK_LIBRARY.md          ← Prebuilt prompts for common business tasks
 │
@@ -56,8 +67,6 @@ ai-template/
 │   └── REPORTING.md             ← How to summarise, analyse, and present data
 │
 ├── governance/
-│   ├── AI_POLICY.md             ← What AI can and cannot do in your org
-│   ├── DATA_RULES.md            ← What data to share vs. keep out of AI tools
 │   └── REVIEW_PROCESS.md        ← How AI output gets reviewed before use
 │
 └── examples/
@@ -76,7 +85,7 @@ You can set up your entire AI context in one sitting using these four prompts. O
 
 ### Prompt 1 — Generate Your Business Profile
 
-Paste this into your AI, answer the questions it asks, then save the output into `context/BUSINESS_PROFILE.md`:
+Paste this into your AI, answer the questions it asks, then save the output into `your-business/context/BUSINESS_PROFILE.md`:
 
 ```
 I'm setting up a context file for my business so AI tools understand who we are.
@@ -96,7 +105,7 @@ After I answer all questions, format the output as a clean markdown document I c
 
 ### Prompt 2 — Define Your Brand Voice
 
-Paste this into your AI, then save the output into `context/BRAND_VOICE.md`:
+Paste this into your AI, then save the output into `your-business/context/BRAND_VOICE.md`:
 
 ```
 I need to define my brand voice so that AI tools always write in a consistent style for my business.
@@ -116,7 +125,7 @@ Then produce a BRAND_VOICE.md file with clear guidelines, a do/don't table, and 
 
 ### Prompt 3 — Build Your Master Prompt
 
-Once you have your context files filled in, use this prompt to generate your `prompts/MASTER_PROMPT.md`:
+Once you have your context files filled in, use this prompt to generate your `your-business/prompts/MASTER_PROMPT.md`:
 
 ```
 I have the following context files about my business:
@@ -143,7 +152,7 @@ Format it as a clean, copy-paste-ready prompt block.
 
 ### Prompt 4 — Set Your AI Policy
 
-Paste this into your AI, answer the questions, then save the output into `governance/AI_POLICY.md`:
+Paste this into your AI, answer the questions, then save the output into `your-business/governance/AI_POLICY.md`:
 
 ```
 I need a simple internal AI policy for my business — practical rules for how my team uses AI tools day to day.
@@ -165,12 +174,12 @@ Then produce a clear, plain-English AI_POLICY.md that a non-technical team membe
 ### Option A — Drop Into Your Own Repo
 1. Fork or copy this repo into your business's version control
 2. Work through the [Quick Start](#quick-start-4-prompts) prompts above
-3. Fill in the template files under `context/` with your outputs
-4. Share the `prompts/MASTER_PROMPT.md` with your team as the standard starting point
+3. Save your completed outputs into `your-business/` (the prompts tell you exactly where each file goes)
+4. Share `your-business/prompts/MASTER_PROMPT.md` with your team as the standard starting point
 
 ### Option B — Always-On Auto-Load (Recommended for Coding Tools)
 
-Several agent auto-load files are included in the repo. Once your `context/` files are filled in, these tools will read your business context automatically — no manual pasting required:
+Several agent auto-load files are included in the repo. Once your `your-business/` files are filled in, these tools will read your business context automatically — no manual pasting required:
 
 | File | Auto-loaded by |
 |------|----------------|
@@ -180,12 +189,12 @@ Several agent auto-load files are included in the repo. Once your `context/` fil
 | `AGENTS.md` | OpenAI Codex / agent runners |
 | `CLAUDE.md` | Claude Code / Claude-based agents |
 
-Just keep your context files up to date — the agent always has context.
+Just keep your `your-business/` files up to date — the agent always has context.
 
 ### Option C — Use With a Chat Project Tool
-- In **ChatGPT Projects**: Upload context files as project knowledge
-- In **Claude Projects**: Add files to project knowledge base
-- In **n8n / Make / Zapier**: Store MASTER_PROMPT as a reusable variable
+- In **ChatGPT Projects**: Upload files from `your-business/` as project knowledge
+- In **Claude Projects**: Add `your-business/` files to project knowledge base
+- In **n8n / Make / Zapier**: Store `your-business/prompts/MASTER_PROMPT.md` as a reusable variable
 
 ### Option D — Give It to a Consultant or New Team Member
 The `onboarding/` folder is designed to be handed to anyone — technical or not — as a self-contained setup guide.
