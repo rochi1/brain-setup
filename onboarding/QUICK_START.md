@@ -180,7 +180,94 @@ Once you have all four files saved:
 1. **Share `your-business/prompts/MASTER_PROMPT.md`** with your team as the standard starting point for any AI task
 2. **Add files to your AI tool's project/knowledge base** — see [SETUP_GUIDE.md](SETUP_GUIDE.md) for tool-specific instructions
 3. **Work through [CHECKLIST.md](CHECKLIST.md)** to confirm your setup is complete
-4. **Fill in the remaining template files** in `templates/` as you go — each one makes your AI more accurate and useful. Save your completed versions to `your-business/`
+4. **Fill in the remaining context files** using the prompts below — each one makes your AI more accurate and useful
+
+---
+
+## Additional Context Prompts
+
+The four steps above give you a working foundation. Run these when you're ready to go deeper. Each follows the same pattern: paste the template, answer the questions, save the output to `your-business/`.
+
+---
+
+### Audience & Personas
+
+**What it does:** Defines your customer segments so AI always writes for the right person, focuses on real pain points, and avoids pitching to the wrong audience.  
+**Template:** `templates/context/AUDIENCE.md`  
+**Save output to:** `your-business/context/AUDIENCE.md`
+
+**Before running this prompt:** Open `templates/context/AUDIENCE.md` and copy its full contents. You'll paste it into the prompt below.
+
+```
+I need to build an audience context file for my business. This file defines our customer personas so that AI tools always write for the right people, focus on real pain points, and avoid pitching to the wrong audience.
+
+I have a template I need you to fill in — I'll paste it at the end of this message. Your job is to:
+
+1. Interview me — ask one question at a time and wait for my answer before continuing
+2. Work through one persona at a time — when a persona is complete, ask whether I have another segment to cover before moving on
+3. After all personas, ask me about bad-fit customers and the customer lifecycle
+4. Once I've answered everything, return the completed template with my answers filled in
+5. Preserve all headings and structure exactly as they appear in the template
+6. Replace all italic placeholder text with real, specific content
+
+Here is the template:
+
+[PASTE CONTENTS OF templates/context/AUDIENCE.md HERE]
+```
+
+---
+
+### Products & Services
+
+**What it does:** Documents everything you sell so AI describes your offering accurately and never invents features or promises.  
+**Template:** `templates/context/PRODUCTS_SERVICES.md`  
+**Save output to:** `your-business/context/PRODUCTS_SERVICES.md`
+
+**Before running this prompt:** Open `templates/context/PRODUCTS_SERVICES.md` and copy its full contents.
+
+```
+I need to document my products and services so AI tools can describe them accurately.
+
+I have a template I need you to fill in — I'll paste it at the end of this message. Your job is to:
+
+1. Interview me — ask one question at a time, working through one product or service at a time
+2. When one product is complete, ask if there's another before moving on
+3. Once I've answered everything, return the completed template with my answers filled in
+4. Preserve all headings and structure exactly as they appear in the template
+5. Replace all italic placeholder text with real, specific content
+6. Be precise about pricing and features — only include what I've confirmed. Never invent capabilities.
+
+Here is the template:
+
+[PASTE CONTENTS OF templates/context/PRODUCTS_SERVICES.md HERE]
+```
+
+---
+
+### Competitors & Positioning
+
+**What it does:** Gives AI the competitive context it needs to position you accurately and write differentiated copy.  
+**Template:** `templates/context/COMPETITORS.md`  
+**Save output to:** `your-business/context/COMPETITORS.md`
+
+**Before running this prompt:** Open `templates/context/COMPETITORS.md` and copy its full contents.
+
+```
+I need to document our competitive position so AI tools can position us accurately and avoid making claims we can't back up.
+
+I have a template I need you to fill in — I'll paste it at the end of this message. Your job is to:
+
+1. Interview me — ask one question at a time, working through one competitor at a time
+2. When one competitor is complete, ask if there's another before moving on
+3. Also ask about indirect alternatives (e.g. doing nothing, spreadsheets, hiring internally)
+4. Once I've answered everything, return the completed template with my answers filled in
+5. Preserve all headings and structure exactly
+6. For the claims table, only include claims I've explicitly confirmed with evidence
+
+Here is the template:
+
+[PASTE CONTENTS OF templates/context/COMPETITORS.md HERE]
+```
 
 ---
 
