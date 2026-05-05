@@ -1,6 +1,11 @@
-# AI Business Template Kit
+# AI Business Template Kit + Superbrain
 
-> A model-agnostic, agent-agnostic collection of markdown templates, context files, and onboarding guides that give any business an instant AI foundation — from day one.
+> A model-agnostic, agent-agnostic collection of markdown templates, context files, and onboarding guides that give any business an instant AI foundation — plus a self-hostable **Superbrain** layer (graph + memory + agents) for businesses that need a real implementation, not just prompts.
+
+**New here?**
+
+- Want the original markdown template kit? Keep reading. Nothing has changed.
+- Want the **Superbrain** — Cognee + Graphiti + Mem0 + Postgres + connectors + agents? Start with [`SUPERBRAIN.md`](SUPERBRAIN.md).
 
 ---
 
