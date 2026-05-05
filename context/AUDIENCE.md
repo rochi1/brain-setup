@@ -4,6 +4,64 @@
 
 ---
 
+## How to Build This File
+
+### Option A — Generate with AI (recommended)
+
+Copy and paste the prompt below into any AI tool. It will interview you persona by persona and produce a completed file you can save directly.
+
+```
+I need to build an audience context file for my business. This file defines our customer personas so that AI tools always write for the right people, focus on real pain points, and avoid pitching to the wrong audience.
+
+Please interview me to build it. Ask one question at a time and wait for my answer before continuing. Work through one persona at a time — when a persona is complete, ask whether I have another segment to cover before moving on.
+
+Here are the questions to ask for each persona, in order:
+
+1. Give this persona a name or label that describes them in a few words — something your team would recognise. (e.g. "The Overwhelmed Ops Manager", "Early-Stage Founder")
+
+2. Describe who they are: their job title or role, seniority level, the size and type of company they work at, and what industry they're in. Be as specific as possible.
+
+3. What's happening in their world right now that makes them a potential customer for us? What does a typical day or week look like for them?
+
+4. What is their primary goal — both in their work and, if relevant, in their career or life?
+
+5. What frustrates them most? What have they already tried that hasn't worked? What keeps them up at night?
+
+6. What specific problem do we solve for them, and what does success look like from their point of view?
+
+7. How do they talk about their problems? What exact words and phrases do they use? Share any real quotes from customers in this segment if you have them.
+
+8. What are they skeptical about? What objections do they commonly raise before buying, and what would make them walk away?
+
+9. Where do we find them — what channels, communities, publications, or events do they pay attention to?
+
+10. How do they make buying decisions? Do they decide alone or with others? Is it a fast or slow process? What matters most to them — price, trust, features, proof?
+
+After all personas are captured, ask:
+- Are there customer types we are explicitly NOT for? (bad-fit segments to avoid attracting)
+- How does a customer typically move from first discovering us to becoming a loyal customer? (to fill in the lifecycle stage table)
+
+Once I've answered everything, produce a completed AUDIENCE.md using exactly the structure below. Replace all italic placeholder text with real content. Preserve all headings exactly. Output only the completed file — no explanation needed.
+
+[PASTE CONTENTS OF context/AUDIENCE.md HERE]
+```
+
+---
+
+### Option B — Fill in the template manually
+
+Work through the sections below directly. For each persona, answer every field based on what you actually observe from sales calls, support tickets, reviews, and customer conversations — not from assumptions.
+
+Tips:
+- Start with your single most important customer segment and get that persona fully complete before adding others
+- "How they talk" is the most valuable field for AI output — pull real quotes wherever possible
+- "Who We Are Not For" actively improves AI output by ruling out irrelevant angles
+- Revisit and update personas as your customer base evolves
+
+---
+
+---
+
 ## How to Use Personas
 
 Each persona represents a real segment of your customer base — not a fictional ideal. Base them on what you actually observe: sales calls, support tickets, reviews, interviews. The more grounded they are, the more useful they are to AI.
