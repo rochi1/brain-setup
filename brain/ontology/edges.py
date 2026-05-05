@@ -1,0 +1,31 @@
+"""Edge types between ontology entities."""
+from __future__ import annotations
+
+from enum import Enum
+
+
+class EdgeType(str, Enum):
+    HAS_TENDER = "HAS_TENDER"
+    FOR_CLIENT = "FOR_CLIENT"
+    HAS_CONTRACT = "HAS_CONTRACT"
+    HAS_DOCUMENT = "HAS_DOCUMENT"
+    HAS_RFI = "HAS_RFI"
+    HAS_VARIATION = "HAS_VARIATION"
+    HAS_CLAIM = "HAS_CLAIM"
+    HAS_RISK = "HAS_RISK"
+    HAS_DECISION = "HAS_DECISION"
+    HAS_LESSON = "HAS_LESSON"
+    HAS_MEETING = "HAS_MEETING"
+    HAS_TASK = "HAS_TASK"
+    REFERS_TO_DRAWING = "REFERS_TO_DRAWING"
+    AMENDS = "AMENDS"
+    SUPPORTED_BY = "SUPPORTED_BY"
+    SUPERSEDES = "SUPERSEDES"
+    DELIVERS_TRADE = "DELIVERS_TRADE"
+    ON_PROJECT = "ON_PROJECT"
+    WORKS_AT = "WORKS_AT"
+    INGESTED_FROM = "INGESTED_FROM"
+    ATTENDED_BY = "ATTENDED_BY"
+
+
+EDGE_TYPES: list[EdgeType] = list(EdgeType)
