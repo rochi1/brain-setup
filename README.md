@@ -42,7 +42,8 @@ ai-template/
 │   │   ├── PRODUCTS_SERVICES.md ← What you sell and how to describe it
 │   │   └── COMPETITORS.md       ← Market context and positioning
 │   ├── prompts/
-│   │   └── MASTER_PROMPT.md     ← The combined context prompt your team uses
+│   │   ├── MASTER_PROMPT.md     ← The combined context prompt your team uses
+│   │   └── ROLES.md             ← Your custom role definitions (generated from prompts/ROLES.md)
 │   └── governance/
 │       ├── AI_POLICY.md         ← Your team's rules for using AI
 │       └── DATA_RULES.md        ← What data is safe to share with AI tools
