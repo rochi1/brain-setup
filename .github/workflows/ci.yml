@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          pip install -e '.[dev,api]'
+      - name: Lint
+        run: ruff check brain
+      - name: Type-check
+        run: mypy brain || true   # strict mypy is opt-in until pilot
+      - name: Test
+        run: pytest -q
+      - name: Compile sanity
+        run: python -m compileall -q brain
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Markdown link sanity
+        run: |
+          python - <<'PY'
+          import os, re, sys
+          root = '.'
+          bad = []
+          link_re = re.compile(r'\]\(([^)]+)\)')
+          for dp, _, fns in os.walk(root):
+              if '/.git' in dp:
+                  continue
+              for fn in fns:
+                  if not fn.endswith('.md'):
+                      continue
+                  p = os.path.join(dp, fn)
+                  with open(p, 'r', errors='ignore') as f:
+                      text = f.read()
+                  for m in link_re.finditer(text):
+                      target = m.group(1).split('#', 1)[0].strip()
+                      if not target or target.startswith(('http://', 'https://', 'mailto:')):
+                          continue
+                      cand = os.path.normpath(os.path.join(dp, target))
+                      if not os.path.exists(cand):
+                          bad.append(f"{p}: -> {target}")
+          if bad:
+              print("Broken intra-repo links:")
+              for b in bad:
+                  print(" ", b)
+              sys.exit(1)
+          PY
