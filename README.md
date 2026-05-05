@@ -25,6 +25,13 @@ Works with any model or agent: ChatGPT, Claude, Gemini, Copilot, Cursor, n8n, cu
 ```
 ai-template/
 ├── README.md                    ← You are here
+├── AGENTS.md                    ← Auto-loaded by OpenAI Codex and agent runners
+├── CLAUDE.md                    ← Auto-loaded by Claude Code and Claude-based agents
+├── .cursorrules                 ← Auto-loaded by Cursor editor
+├── .windsurfrules               ← Auto-loaded by Windsurf editor
+│
+├── .github/
+│   └── copilot-instructions.md  ← Auto-loaded by GitHub Copilot
 │
 ├── onboarding/
 │   ├── QUICK_START.md           ← Start here — 4 prompts to set everything up
@@ -48,10 +55,15 @@ ai-template/
 │   ├── CUSTOMER_COMMS.md        ← Email, chat, support response guidelines
 │   └── REPORTING.md             ← How to summarise, analyse, and present data
 │
-└── governance/
-    ├── AI_POLICY.md             ← What AI can and cannot do in your org
-    ├── DATA_RULES.md            ← What data to share vs. keep out of AI tools
-    └── REVIEW_PROCESS.md        ← How AI output gets reviewed before use
+├── governance/
+│   ├── AI_POLICY.md             ← What AI can and cannot do in your org
+│   ├── DATA_RULES.md            ← What data to share vs. keep out of AI tools
+│   └── REVIEW_PROCESS.md        ← How AI output gets reviewed before use
+│
+└── examples/
+    └── folio/                   ← Fully completed example (fictional B2B SaaS business)
+        ├── context/             ← All 5 context files filled in
+        └── prompts/             ← Completed master prompt
 ```
 
 ---
@@ -156,14 +168,26 @@ Then produce a clear, plain-English AI_POLICY.md that a non-technical team membe
 3. Fill in the template files under `context/` with your outputs
 4. Share the `prompts/MASTER_PROMPT.md` with your team as the standard starting point
 
-### Option B — Use With a Project/Agent Tool
-- In **Cursor** or **Windsurf**: Add the `context/` folder as workspace context
+### Option B — Always-On Auto-Load (Recommended for Coding Tools)
+
+Several agent auto-load files are included in the repo. Once your `context/` files are filled in, these tools will read your business context automatically — no manual pasting required:
+
+| File | Auto-loaded by |
+|------|----------------|
+| `.cursorrules` | Cursor |
+| `.windsurfrules` | Windsurf |
+| `.github/copilot-instructions.md` | GitHub Copilot |
+| `AGENTS.md` | OpenAI Codex / agent runners |
+| `CLAUDE.md` | Claude Code / Claude-based agents |
+
+Just keep your context files up to date — the agent always has context.
+
+### Option C — Use With a Chat Project Tool
 - In **ChatGPT Projects**: Upload context files as project knowledge
 - In **Claude Projects**: Add files to project knowledge base
-- In **Copilot**: Reference files inline or as custom instructions
 - In **n8n / Make / Zapier**: Store MASTER_PROMPT as a reusable variable
 
-### Option C — Give It to a Consultant or New Team Member
+### Option D — Give It to a Consultant or New Team Member
 The `onboarding/` folder is designed to be handed to anyone — technical or not — as a self-contained setup guide.
 
 ---
@@ -196,8 +220,10 @@ This is designed to grow. If you've built a template, prompt, or process file th
 - [ ] Starter templates for common industries (SaaS, agency, e-commerce, professional services)
 - [ ] Role-specific prompt packs (marketing, sales, ops, support, finance)
 - [ ] Automation-ready prompt formats (structured JSON output variants)
-- [ ] Example completed context files for a fictional business
+- [x] Example completed context files for a fictional business (`examples/folio/`)
+- [x] Agent auto-load files for Cursor, Windsurf, Copilot, Claude Code, and OpenAI agents
 - [ ] VS Code snippet pack for fast template insertion
+- [ ] `CONTRIBUTING.md` — submission guidelines for new templates and examples
 
 ---
 

@@ -12,6 +12,28 @@ How you do that depends on the tool.
 
 ---
 
+## Always-On Setup — Agent Auto-Load Files
+
+If you're using a coding or agent tool (Cursor, Windsurf, GitHub Copilot, Claude Code, or OpenAI agent runners), you don't need to paste context manually. The repo already includes auto-load instruction files that tell the agent to read your context store at the start of every session.
+
+| File | Picked up by |
+|------|-------------|
+| `.cursorrules` | Cursor |
+| `.windsurfrules` | Windsurf |
+| `.github/copilot-instructions.md` | GitHub Copilot |
+| `AGENTS.md` | OpenAI Codex / agent runners |
+| `CLAUDE.md` | Claude Code / Claude-based agents |
+
+**What you need to do:**
+1. Make sure your `context/` files are filled in (see [QUICK_START.md](QUICK_START.md))
+2. That's it — the agent will read and apply your business context automatically
+
+**Important:** These auto-load files point to your context store but do not replace it. Keep your context files accurate and up to date; that's what the agent actually reads.
+
+> For chat-based tools (ChatGPT web, Claude.ai, Gemini), there is no auto-load file mechanism — use the project knowledge or manual paste options in the sections below.
+
+---
+
 ## ChatGPT (OpenAI)
 
 ### Option A — ChatGPT Projects (recommended)
