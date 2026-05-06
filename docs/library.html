@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Library — AI Business Setup</title>
+  <meta name="description" content="Pick a role and a task. Get a ready-to-paste prompt." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <style>
+    .library-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .library-layout { grid-template-columns: 1fr; }
+    }
+
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 72px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--surface);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+      transition: border-color .15s;
+      margin-bottom: 16px;
+    }
+    select:focus { outline: none; border-color: var(--accent); }
+    select:hover { border-color: #aaa; }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .toggle-sub {
+      font-size: 11px;
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* toggle switch */
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 22px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+    /* output panel */
+    .output-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--code-bg);
+    }
+    .output-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .output-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .output-section {
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .output-section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px 6px;
+      background: #161616;
+    }
+    .section-pill {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .pill-master { background: rgba(37,99,235,.25); color: #93c5fd; }
+    .pill-role   { background: rgba(124,58,237,.25); color: #c4b5fd; }
+    .pill-task   { background: rgba(22,163,74,.25);  color: #86efac; }
+
+    .output-text {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 12.5px;
+      line-height: 1.65;
+      padding: 14px 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .output-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: #161616;
+    }
+    .char-count {
+      font-size: 11px;
+      color: #666;
+    }
+    .big-copy-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 9px 22px;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .big-copy-btn:hover { background: var(--accent-dark); }
+    .big-copy-btn.copied { background: var(--success); }
+
+    .empty-state {
+      padding: 60px 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; line-height: 1.6; }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .page-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color .15s;
+    }
+    .nav-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">🧠 AI Business Setup</a>
+  <span class="tagline" style="flex:1">Works with any AI tool</span>
+  <a href="index.html" class="nav-link">← Setup guide</a>
+</header>
+
+<div class="container" style="max-width:1100px">
+  <h1 class="page-title">Prompt Library</h1>
+  <p class="page-sub">Pick a role and a task. Copy the combined prompt straight into your AI tool.</p>
+
+  <div class="library-layout">
+
+    <!-- Controls -->
+    <div class="controls-card">
+      <label class="field-label" for="role-select">Role</label>
+      <select id="role-select" onchange="buildPrompt()">
+        <option value="">No role — task only</option>
+        <optgroup label="Content &amp; Marketing">
+          <option value="copywriter">Senior Copywriter</option>
+          <option value="strategist">Content Strategist</option>
+          <option value="social">Social Media Manager</option>
+        </optgroup>
+        <optgroup label="Sales &amp; Customer">
+          <option value="sales">Sales Consultant</option>
+          <option value="csm">Customer Success Manager</option>
+        </optgroup>
+        <optgroup label="Strategy &amp; Analysis">
+          <option value="analyst">Business Analyst</option>
+          <option value="advisor">Strategic Advisor</option>
+        </optgroup>
+        <optgroup label="Operations">
+          <option value="process">Process Designer</option>
+          <option value="data">Data Analyst</option>
+        </optgroup>
+      </select>
+
+      <label class="field-label" for="task-select">Task</label>
+      <select id="task-select" onchange="buildPrompt()">
+        <option value="">Select a task…</option>
+        <optgroup label="Content &amp; Copy">
+          <option value="blog">Blog Post</option>
+          <option value="email-marketing">Email — Marketing / Campaign</option>
+          <option value="email-transactional">Email — Transactional / Operational</option>
+          <option value="social-post">Social Media Post</option>
+          <option value="website-copy">Website Copy — Page Section</option>
+          <option value="case-study">Case Study</option>
+        </optgroup>
+        <optgroup label="Research &amp; Analysis">
+          <option value="market-research">Market Research Summary</option>
+          <option value="competitor-analysis">Competitor Analysis</option>
+          <option value="feedback-analysis">Customer Feedback Analysis</option>
+        </optgroup>
+        <optgroup label="Internal &amp; Operations">
+          <option value="meeting-agenda">Meeting Agenda</option>
+          <option value="meeting-notes">Meeting Notes → Action Items</option>
+          <option value="job-description">Job Description</option>
+          <option value="sop">SOP (Standard Operating Procedure)</option>
+        </optgroup>
+        <optgroup label="Strategy">
+          <option value="swot">SWOT Analysis</option>
+          <option value="decision">Decision Framework</option>
+        </optgroup>
+      </select>
+
+      <div class="toggle-row">
+        <div>
+          <span class="toggle-label">Include Master Prompt</span>
+          <span class="toggle-sub">Paste your Master Prompt at the top</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="master-toggle" onchange="buildPrompt()" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div id="output-panel">
+      <div class="output-card">
+        <div class="empty-state">
+          <div class="empty-icon">👆</div>
+          <p>Select a task from the dropdown on the left.<br>Your ready-to-paste prompt will appear here.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────
+
+const ROLES = {
+  copywriter: {
+    name: 'Senior Copywriter',
+    text: `For this task, act as a Senior Copywriter who has been embedded with our brand for years.
+
+Your priorities:
+- Write in our voice — refer to the brand voice context already loaded
+- Lead with the reader's interest, not ours
+- Every sentence must earn its place — cut anything that doesn't add meaning
+- Choose specific language over vague claims (show, don't assert)
+
+You avoid:
+- Filler openers ("Are you tired of...?", "In today's fast-paced world...")
+- Passive voice unless there's a deliberate reason
+- Hyperbole and unsubstantiated superlatives
+- Anything that sounds like it was written by a committee
+
+Before writing, state in one sentence who you're writing for and what action or feeling you want them to leave with.`,
+  },
+  strategist: {
+    name: 'Content Strategist',
+    text: `For this task, act as a Content Strategist who understands our business, our audience, and our competitive position.
+
+Your priorities:
+- Think about the audience first — what do they need to know, believe, or feel?
+- Connect content to business outcomes — why does this piece matter?
+- Identify where this fits in the customer journey (awareness / consideration / decision / retention)
+- Flag gaps or opportunities beyond the immediate brief
+
+You avoid:
+- Producing content for content's sake
+- Losing sight of what the reader gets out of it
+- Generic advice that could apply to any business
+
+Structure recommendations as: objective → audience → key message → format → distribution → success metric.`,
+  },
+  social: {
+    name: 'Social Media Manager',
+    text: `For this task, act as a Social Media Manager who knows our brand inside out.
+
+Your priorities:
+- Native-feeling content for the platform specified — not copy-pasted from another channel
+- Hook in the first line — assume people are scrolling fast
+- Voice is consistent with our brand but adapted to the platform register
+- Engagement that's genuine, not bait
+
+You avoid:
+- Hashtag stuffing
+- Telling people to "like and share" or using hollow CTAs
+- Sounding like a brand account pretending to be human
+
+If no platform is specified, ask before writing. Platform matters.`,
+  },
+  sales: {
+    name: 'Sales Consultant',
+    text: `For this task, act as a Senior Sales Consultant who knows our products, our customers, and our competitive position deeply.
+
+Your priorities:
+- Understand the customer's situation before pitching anything
+- Focus on outcomes and value, not features and specs
+- Anticipate and address objections honestly — never dodge them
+- Move the conversation forward with a clear next step
+
+You avoid:
+- Pressure tactics or artificial urgency
+- Overpromising — if we can't do something, say so
+- Speaking negatively about competitors by name
+- Generic sales language ("synergy", "game-changer", "end-to-end solution")
+
+When writing sales content, always specify: who it's for, where they are in the buying journey, and what the desired next action is.`,
+  },
+  csm: {
+    name: 'Customer Success Manager',
+    text: `For this task, act as a Customer Success Manager whose priority is making customers successful, not keeping them happy.
+
+Your priorities:
+- Understand what the customer is trying to achieve
+- Be proactively honest — surface problems early, don't wait to be asked
+- Offer concrete next steps, not vague reassurance
+- Write as a trusted advisor, not a support agent
+
+You avoid:
+- Corporate deflection language ("We apologise for any inconvenience")
+- Blaming the customer, even subtly
+- Promising outcomes you can't guarantee
+- Responses that close the loop without actually resolving the issue`,
+  },
+  analyst: {
+    name: 'Business Analyst',
+    text: `For this task, act as a Business Analyst with strong commercial and operational instincts.
+
+Your priorities:
+- Structured thinking — break complex problems into component parts
+- Evidence over opinion — distinguish between what we know and what we're assuming
+- Practical recommendations — insights that can actually be acted on
+- Clarity — explain complexity in plain language, not jargon
+
+You avoid:
+- Analysis for its own sake — everything should connect to a decision or action
+- Burying the lead — state the key finding first, then support it
+- False certainty — flag when data is incomplete or assumptions are being made
+
+Structure outputs as: situation → key findings → so what → recommended action → open questions.`,
+  },
+  advisor: {
+    name: 'Strategic Advisor',
+    text: `For this task, act as a Strategic Advisor who has worked with businesses at our stage and in our sector.
+
+Your priorities:
+- Think long-term — what are the second-order consequences?
+- Challenge assumptions — what are we taking for granted that might be wrong?
+- Focus on what matters most — not everything is equally important
+- Be direct — say what you actually think, not what's comfortable to hear
+
+You avoid:
+- Both-sidesing everything — have a view
+- Generic frameworks applied without context
+- Advice that sounds smart but can't be acted on
+
+Start by stating what you understand the core question or challenge to be. If you'd frame it differently, say so.`,
+  },
+  process: {
+    name: 'Process Designer',
+    text: `For this task, act as a Process Designer focused on clarity, consistency, and reducing friction.
+
+Your priorities:
+- Design for the person doing the work, not the person who approved it
+- Every step should have a clear owner, input, and output
+- Identify failure points — where does this process typically break?
+- Keep it as simple as possible — complexity is always a cost
+
+You avoid:
+- Process theatre — steps that exist for appearances, not outcomes
+- Ambiguity about who does what
+- Processes that only work when everything goes right
+
+Output process documentation as: purpose → trigger → steps (with owners) → outputs → exception handling → review cadence.`,
+  },
+  data: {
+    name: 'Data Analyst',
+    text: `For this task, act as a Data Analyst who is focused on insight, not just reporting.
+
+Your priorities:
+- What does the data actually mean for the business?
+- Distinguish between correlation and causation
+- Surface the unexpected — what's surprising or counterintuitive?
+- Make it actionable — what should we do differently based on this?
+
+You avoid:
+- Reporting numbers without interpretation
+- Cherry-picking data that supports a pre-existing view
+- Precision that implies false certainty in messy data
+- Dashboard thinking — more metrics is not better
+
+Always state: what was measured, over what period, and what the key limitation of this data is.`,
+  },
+};
+
+const TASKS = {
+  blog: {
+    name: 'Blog Post',
+    category: 'Content & Copy',
+    text: `Write a blog post on the following topic: [TOPIC]
+
+Target audience: [Which persona, or describe]
+Goal of this post: [Inform / build trust / generate leads / SEO / other]
+Desired length: [e.g. 600 words / 1,200 words / long-form]
+Tone notes: [Any deviation from our default voice for this piece]
+Key points to cover: [List 3–5 or leave blank to let AI structure it]
+Call to action: [What should the reader do at the end?]
+
+Use our brand voice. Avoid generic AI article structure (no "In conclusion..." or "In today's world..."). Lead with what's interesting, not with context-setting.`,
+  },
+  'email-marketing': {
+    name: 'Email — Marketing / Campaign',
+    category: 'Content & Copy',
+    text: `Write a marketing email for the following campaign: [CAMPAIGN NAME / PURPOSE]
+
+Audience: [Segment — new leads / existing customers / lapsed customers / other]
+Goal: [What action do we want them to take?]
+Key message: [The single most important thing this email communicates]
+Offer or hook: [What we're offering, announcing, or sharing]
+CTA: [The specific action — link text, button copy, or reply instruction]
+Tone: [Any adjustment from our default voice]
+
+Keep the subject line, preview text, and body distinct. Write 2 subject line options. No hollow openers ("Hope this finds you well"). Get to the point fast.`,
+  },
+  'email-transactional': {
+    name: 'Email — Transactional / Operational',
+    category: 'Content & Copy',
+    text: `Write a transactional email for the following trigger: [TRIGGER — e.g. welcome, purchase confirmation, password reset, trial ending]
+
+What the reader has just done or what has just happened: [Context]
+What they need to know: [Key information]
+What they need to do next (if anything): [Action]
+Tone: [Functional and clear — not a marketing moment unless specified]
+
+Keep it short. Every sentence should be there for a reason.`,
+  },
+  'social-post': {
+    name: 'Social Media Post',
+    category: 'Content & Copy',
+    text: `Write a social media post for the following: [TOPIC / CONTENT PIECE / ANNOUNCEMENT]
+
+Platform: [LinkedIn / X (Twitter) / Instagram / Facebook / other]
+Goal: [Awareness / engagement / clicks / shares]
+Hook approach: [Question / bold claim / statistic / story / other — or let AI decide]
+Link or CTA: [If applicable]
+Length: [Short / medium / thread — or platform default]
+
+Adapt tone for the platform. No hashtag stuffing. No "Drop a comment below!" unless it's genuinely relevant.`,
+  },
+  'website-copy': {
+    name: 'Website Copy — Page Section',
+    category: 'Content & Copy',
+    text: `Write copy for the following section of our website: [PAGE NAME + SECTION — e.g. Homepage hero, About page intro, Pricing page header]
+
+What this section needs to do: [e.g. Immediately communicate our value, build trust, explain the product]
+Reader's state of mind when they arrive here: [e.g. Sceptical and comparing options / Warm lead already interested / First-time visitor who doesn't know us]
+Key message: [The one thing they must leave this section knowing or feeling]
+Word count target: [e.g. Headline + 2 sentences / Under 100 words / etc.]
+
+Follow our brand voice exactly. Prioritise clarity over cleverness.`,
+  },
+  'case-study': {
+    name: 'Case Study',
+    category: 'Content & Copy',
+    text: `Help me write a case study for the following customer story: [CUSTOMER NAME / PSEUDONYM]
+
+Customer profile: [Who they are — industry, size, role of main contact]
+The situation before: [What problem or situation brought them to us]
+What we did: [The solution, product, or service used]
+The result: [Outcomes — ideally with specific numbers or before/after comparisons]
+A quote from the customer (if available): [Paste here, or note if not available]
+Target audience for this case study: [Which persona it's meant to persuade]
+
+Structure: Situation → Challenge → Solution → Result → Quote. Keep it factual. Let the numbers do the work. Write in third person.`,
+  },
+  'market-research': {
+    name: 'Market Research Summary',
+    category: 'Research & Analysis',
+    text: `Summarise the key insights from the following research material and tell me what it means for our business: [PASTE RESEARCH / REPORT / DATA]
+
+Focus on:
+- What's most relevant to our audience and market position
+- Anything that challenges our current assumptions
+- Opportunities we're not currently addressing
+- Risks we should be aware of
+
+Format: Key findings (bullet points) → So what for our business (brief narrative) → Recommended actions (prioritised list).`,
+  },
+  'competitor-analysis': {
+    name: 'Competitor Analysis',
+    category: 'Research & Analysis',
+    text: `Analyse the following competitor: [COMPETITOR NAME]
+
+Sources to review (paste or attach): [Website copy / pricing page / reviews / LinkedIn / other]
+
+I want to understand:
+1. How they position themselves and who they're targeting
+2. What they do well that we should be aware of
+3. Where they're weak or where customers are frustrated
+4. How we should think about them in our own positioning
+
+Be honest — if they do something better than us, say so. I need an accurate picture, not a flattering one.`,
+  },
+  'feedback-analysis': {
+    name: 'Customer Feedback Analysis',
+    category: 'Research & Analysis',
+    text: `Analyse the following customer feedback and summarise the key themes: [PASTE FEEDBACK — reviews, survey responses, support tickets, interview notes]
+
+Tell me:
+1. The top 3–5 things customers value most
+2. The top 3–5 pain points or frustrations
+3. Any patterns in how customers describe the problem we solve (their language, not ours)
+4. Anything surprising or that challenges what we think we know
+
+Format: Themes → Direct quotes that illustrate each theme → Recommendations.`,
+  },
+  'meeting-agenda': {
+    name: 'Meeting Agenda',
+    category: 'Internal & Operations',
+    text: `Create an agenda for the following meeting: [MEETING NAME / PURPOSE]
+
+Duration: [e.g. 30 min / 60 min / 90 min]
+Attendees: [Roles, not names]
+Goal of the meeting: [What does a successful meeting produce?]
+Topics to cover: [List or leave blank to let AI suggest based on meeting purpose]
+Pre-read or preparation required: [If any]
+
+Format each agenda item with: topic, owner, time allocation, and desired output (decision / update / discussion).`,
+  },
+  'meeting-notes': {
+    name: 'Meeting Notes → Action Items',
+    category: 'Internal & Operations',
+    text: `Turn the following meeting notes into a clean summary with action items: [PASTE NOTES]
+
+Produce:
+1. One-paragraph summary of what was discussed and decided
+2. Action items in a table: Action | Owner | Due date
+3. Open questions or decisions deferred
+
+Be concise. Do not include everything discussed — only what matters going forward.`,
+  },
+  'job-description': {
+    name: 'Job Description',
+    category: 'Internal & Operations',
+    text: `Write a job description for the following role: [JOB TITLE]
+
+Key responsibilities: [List 4–6 or describe in plain English]
+Must-have requirements: [Skills, experience, qualifications that are non-negotiable]
+Nice-to-have: [Preferred but not required]
+Team / reporting structure: [Who they work with and report to]
+Anything important about our culture or way of working: [What someone needs to thrive here]
+
+Write in our voice. Be specific and honest — describe the job as it actually is. Avoid inflated corporate job description language. Be clear about what makes this role challenging, not just appealing.`,
+  },
+  sop: {
+    name: 'SOP (Standard Operating Procedure)',
+    category: 'Internal & Operations',
+    text: `Write a standard operating procedure for the following process: [PROCESS NAME]
+
+Purpose of this process: [What it achieves and why it matters]
+Who follows this process: [Role(s)]
+Trigger: [What starts this process]
+Steps: [List what you know — AI will structure and fill gaps]
+Tools or systems involved: [Any software, templates, or platforms]
+Common mistakes or failure points: [If known]
+How do we know it's done correctly: [Success criteria or quality check]
+
+Format: Purpose → Scope → Trigger → Step-by-step (numbered, with owner per step) → Quality check → Exception handling.`,
+  },
+  swot: {
+    name: 'SWOT Analysis',
+    category: 'Strategy',
+    text: `Run a SWOT analysis for the following: [OUR BUSINESS / A SPECIFIC PRODUCT / A DECISION / A MARKET ENTRY]
+
+Use the context you have about our business. For each quadrant, give 4–6 specific points — not generic ones.
+
+After the SWOT, give me a "So what?" — the 2–3 most important strategic implications based on the analysis.
+
+Be direct. If there are genuine weaknesses or threats, name them clearly.`,
+  },
+  decision: {
+    name: 'Decision Framework',
+    category: 'Strategy',
+    text: `Help me think through the following decision: [DESCRIBE THE DECISION]
+
+Context: [What's driving this? What do we know? What are the constraints?]
+Options being considered: [List them, or ask AI to generate options]
+What matters most in making this decision: [Criteria — e.g. speed, cost, risk, reversibility]
+
+Structure your response as:
+1. Restate the decision clearly
+2. Evaluate each option against the criteria
+3. Your recommendation and why
+4. Key risks or unknowns that could change the answer
+5. What we'd need to believe for each option to be right`,
+  },
+};
+
+const MASTER_PLACEHOLDER = `[YOUR MASTER PROMPT]
+Paste the contents of your-business/prompts/MASTER_PROMPT.md here.
+────────────────────────────────────────────────────────────────`;
+
+// ── Build & render ────────────────────────────────────────
+function buildPrompt() {
+  const roleId   = document.getElementById('role-select').value;
+  const taskId   = document.getElementById('task-select').value;
+  const inclMaster = document.getElementById('master-toggle').checked;
+  const panel    = document.getElementById('output-panel');
+
+  if (!taskId) {
+    panel.innerHTML = `
+      <div class="output-card">
+        <div class="empty-state">
+          <div class="empty-icon">👆</div>
+          <p>Select a task from the dropdown on the left.<br>Your ready-to-paste prompt will appear here.</p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const role = ROLES[roleId];
+  const task = TASKS[taskId];
+
+  const sections = [];
+  if (inclMaster) sections.push({ label: 'Master Prompt', pill: 'pill-master', text: MASTER_PLACEHOLDER });
+  if (role)       sections.push({ label: 'Role: ' + role.name, pill: 'pill-role',   text: role.text });
+                  sections.push({ label: 'Task: ' + task.name, pill: 'pill-task',   text: task.text });
+
+  const fullText = sections.map(s => s.text).join('\n\n---\n\n');
+  const charCount = fullText.length;
+
+  const sectionsHTML = sections.map(s => `
+    <div class="output-section">
+      <div class="output-section-label">
+        <span class="section-pill ${s.pill}">${s.label}</span>
+      </div>
+      <div class="output-text">${escHtml(s.text)}</div>
+    </div>
+  `).join('');
+
+  const metaParts = [];
+  if (inclMaster) metaParts.push('Master Prompt');
+  if (role) metaParts.push(role.name);
+  metaParts.push(task.name);
+
+  panel.innerHTML = `
+    <div class="output-card">
+      <div class="output-header">
+        <div>
+          <div class="output-title">${metaParts.join(' + ')}</div>
+          <div class="output-meta">${task.category} · ${sections.length} section${sections.length > 1 ? 's' : ''}</div>
+        </div>
+      </div>
+      ${sectionsHTML}
+      <div class="output-footer">
+        <span class="char-count">${charCount.toLocaleString()} characters</span>
+        <button class="big-copy-btn" id="copy-btn" onclick="copyAll()">
+          📋 Copy full prompt
+        </button>
+      </div>
+    </div>
+  `;
+
+  // store for copy
+  window._currentPrompt = fullText;
+}
+
+function copyAll() {
+  if (!window._currentPrompt) return;
+  const btn = document.getElementById('copy-btn');
+  navigator.clipboard.writeText(window._currentPrompt).then(() => {
+    btn.innerHTML = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '📋 Copy full prompt';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>

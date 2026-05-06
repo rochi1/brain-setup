@@ -752,7 +752,7 @@ function renderDoneStep() {
 
       <h3>More resources</h3>
       <div class="resource-grid">
-        <a class="resource-link" href="https://github.com/rochi1/brain-setup/blob/master/prompts/TASK_LIBRARY.md" target="_blank">
+        <a class="resource-link" href="library.html">
           <span class="r-icon">📚</span>
           <span>Task library — prebuilt prompts for content, email, analysis</span>
         </a>
