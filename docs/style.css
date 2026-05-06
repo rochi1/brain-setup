@@ -378,6 +378,8 @@ body {
   padding: 16px 20px;
   color: var(--text);
   margin: 12px 0;
+  white-space: pre;
+  overflow-x: auto;
 }
 .folder-tree .dir { color: var(--accent); font-weight: 600; }
 .folder-tree .file { color: var(--muted); }
