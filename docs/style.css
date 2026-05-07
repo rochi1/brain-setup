@@ -478,12 +478,158 @@ p { font-size: 14px; color: var(--muted); margin-bottom: 12px; line-height: 1.6;
 .resource-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
 .resource-link .r-icon { font-size: 20px; }
 
+/* ── Progress bar (new render.js version) ── */
+.progress-wrap { display: flex; gap: 6px; align-items: center; margin-bottom: 24px; }
+.progress-step  { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.progress-step .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.progress-step.active .dot { background: var(--accent); }
+.progress-step.done   .dot { background: var(--success, #16a34a); }
+.progress-step .label { white-space: nowrap; }
+.progress-sep  { height: 2px; flex: 1; background: var(--border); min-width: 12px; }
+
+/* ── Header actions ── */
+.app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.start-over-btn { font-size: 12px; padding: 5px 10px; cursor: pointer; }
+
+/* ── File step header ── */
+.file-step-header { margin-bottom: 16px; }
+.file-step-meta   { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
+.file-step-counter { font-size: 12px; color: var(--muted); }
+.badge-required { font-size: 11px; font-weight: 700; background: #fef2f2; color: #b91c1c;
+  border: 1px solid #fca5a5; border-radius: 20px; padding: 2px 8px; }
+.badge-optional { font-size: 11px; font-weight: 700; background: var(--surface); color: var(--muted);
+  border: 1px solid var(--border); border-radius: 20px; padding: 2px 8px; }
+.why-it-matters { display: flex; gap: 8px; font-size: 13px; color: var(--muted);
+  background: var(--surface); border-radius: 8px; padding: 10px 14px; margin-top: 8px; }
+.why-icon { flex-shrink: 0; }
+
+/* ── Prompt copy block ── */
+.prompt-copy-block { position: relative; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; }
+.prompt-pre  { margin: 0; padding: 16px; font-size: 13px; line-height: 1.55; white-space: pre-wrap;
+  word-break: break-word; max-height: 340px; overflow-y: auto; color: var(--text); }
+.prompt-copy-btn-large { position: absolute; top: 10px; right: 10px; padding: 6px 14px;
+  font-size: 12px; font-weight: 600; background: var(--accent); color: #fff; border: none;
+  border-radius: 6px; cursor: pointer; transition: background .15s; }
+.prompt-copy-btn-large:hover  { background: var(--accent-dark); }
+.prompt-copy-btn-large.copied { background: var(--success, #16a34a); }
+
+/* ── Paste area ── */
+.paste-area { width: 100%; box-sizing: border-box; min-height: 200px; padding: 12px 14px;
+  font-size: 13px; line-height: 1.55; border: 1.5px solid var(--border); border-radius: 8px;
+  background: var(--surface); color: var(--text); resize: vertical; font-family: inherit; }
+.paste-area:focus { outline: none; border-color: var(--accent); }
+.paste-error { color: #b91c1c; font-size: 13px; margin-top: 4px; }
+.good-output-hint { font-size: 13px; color: var(--muted); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; cursor: pointer; }
+.good-output-hint summary { font-weight: 600; color: var(--text); }
+.good-output-hint p { margin: 8px 0 0; }
+
+/* ── Choice row (roles/tasks gate) ── */
+.choice-row { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+.choice-btn { display: flex; flex-direction: column; gap: 4px; text-align: left;
+  padding: 16px 18px; border: 1.5px solid var(--border); border-radius: 12px;
+  background: var(--surface); cursor: pointer; transition: all .15s; }
+.choice-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+.choice-btn.active { border-color: var(--accent); background: var(--accent-light); }
+.choice-btn strong { font-size: 15px; color: var(--text); }
+.choice-btn span   { font-size: 13px; color: var(--muted); }
+.choice-btn .choice-icon { font-size: 20px; margin-bottom: 2px; }
+
+/* ── File preview list (review step) ── */
+.file-preview-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 24px; }
+.file-preview-row  { display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border-radius: 8px; background: var(--surface); }
+.file-preview-icon { font-size: 16px; flex-shrink: 0; }
+.file-preview-info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.file-preview-title    { font-size: 14px; font-weight: 600; color: var(--text); }
+.file-preview-filename { font-size: 12px; color: var(--muted); font-family: monospace; }
+.file-preview-status { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.status-done { color: #16a34a; }
+.status-warn { color: #b91c1c; }
+.status-skip { color: var(--muted); }
+.file-preview-actions { flex-shrink: 0; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+
+/* ── Shareable URL ── */
+.shareable-url-block { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; }
+.url-input { font-size: 13px; border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 10px; background: var(--bg); color: var(--muted); }
+
+/* ── Download button ── */
+.btn-download { background: #16a34a; color: #fff; }
+.btn-download:hover { background: #15803d; }
+.btn-download:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+
+/* ── Ghost button ── */
+.btn-ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn-ghost:hover { background: var(--accent-light); }
+
+/* ── Field group ── */
+.field-group  { margin-bottom: 18px; }
+.field-label  { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+.field-input  { width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 14px;
+  border: 1.5px solid var(--border); border-radius: 8px; background: var(--surface);
+  color: var(--text); font-family: inherit; transition: border-color .15s; }
+.field-input:focus { outline: none; border-color: var(--accent); }
+.field-hint   { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ── Nav row ── */
+.nav-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* ── Resume banner ── */
+.resume-banner { background: var(--accent-light); border: 1.5px solid var(--accent);
+  border-radius: 10px; padding: 14px 18px; margin-top: 16px;
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.resume-banner-text { flex: 1; min-width: 0; font-size: 14px; color: var(--text); }
+
+/* ── Info/tip boxes ── */
+.info-box { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px;
+  border-radius: 8px; font-size: 13px; }
+.info-box.tip     { background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; }
+.info-box.success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+.info-box.warn    { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+.info-box .icon   { flex-shrink: 0; font-size: 16px; }
+
+/* ── Mode tabs (brand voice) ── */
+.os-tab { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface); font-size: 13px; cursor: pointer; transition: all .15s; }
+.os-tab:hover { border-color: var(--accent); }
+.os-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ── Done card ── */
+.done-card .done-hero { text-align: center; padding: 8px 0 24px; }
+.done-icon  { font-size: 52px; margin-bottom: 12px; }
+.done-title { font-size: 26px; font-weight: 800; margin: 0 0 8px; }
+.done-subtitle { font-size: 15px; color: var(--muted); max-width: 460px; margin: 0 auto; }
+.what-next-list { padding-left: 20px; line-height: 2; color: var(--muted); font-size: 14px; }
+.what-next-list li strong { color: var(--text); }
+.resources-grid { margin-top: 28px; }
+.resources-row  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.resource-card  { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px;
+  border: 1px solid var(--border); border-radius: 10px; text-decoration: none;
+  color: var(--text); font-size: 13px; background: var(--surface); transition: all .15s; }
+.resource-card:hover { border-color: var(--accent); background: var(--accent-light); }
+.resource-icon  { font-size: 22px; margin-bottom: 4px; }
+.resource-card strong { font-weight: 700; }
+.resource-card span   { color: var(--muted); font-size: 12px; }
+.done-actions { margin-top: 28px; text-align: center; }
+
+/* ── Upload instructions ── */
+.upload-steps ol { padding-left: 20px; line-height: 2; font-size: 14px; color: var(--muted); }
+.upload-steps li strong { color: var(--text); }
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .container { padding: 24px 16px 60px; }
   .card { padding: 22px; }
   .tool-grid { grid-template-columns: repeat(2, 1fr); }
   .resource-grid { grid-template-columns: 1fr; }
+  .resources-row { grid-template-columns: 1fr; }
   .progress-step .label { display: none; }
   .step-title { font-size: 19px; }
+  .file-preview-row { flex-wrap: wrap; }
+  .nav-row { flex-direction: column; align-items: stretch; }
+  .nav-row .btn { width: 100%; text-align: center; justify-content: center; }
 }
