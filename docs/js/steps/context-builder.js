@@ -21,13 +21,49 @@ export function renderBusinessNameCapture() {
       <div class="info-box tip" style="margin-bottom:24px"><span class="icon">💡</span>
         <span>Takes 30–60 minutes depending on how many optional files you do. Progress is saved automatically — close the tab and come back any time.</span>
       </div>
+
       <div class="field-group">
-        <label class="field-label">What's your business name?</label>
+        <label class="field-label">What's your business name? *</label>
         <input type="text" class="field-input" id="biz-name-input"
           placeholder="e.g. Acme Corp"
           value="${escapeHtml(state.businessName)}" />
-        <p class="field-hint">Used to name your ZIP file and generate your file-reference Master Prompt.</p>
+        <p class="field-hint">Used to name your ZIP file and generate your Master Prompt.</p>
       </div>
+
+      <div class="field-group">
+        <label class="field-label">Website URL <em>(optional)</em></label>
+        <input type="url" class="field-input" id="biz-website-input"
+          placeholder="e.g. https://www.acmecorp.com"
+          value="${escapeHtml(state.websiteUrl)}" />
+        <p class="field-hint">Your AI will fetch your site first and use it as a starting point — saving you time answering questions about basics already on the page.</p>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Business logo <em>(optional)</em></label>
+        <div class="logo-upload-area" id="logo-upload-area">
+          <input type="file" class="logo-file-input" id="logo-file-input"
+            accept="image/png,image/jpeg,image/svg+xml,image/webp" />
+          <div id="logo-no-file" style="${state.logoName ? 'display:none' : ''}">
+            <label class="logo-upload-trigger" for="logo-file-input">
+              <span class="logo-upload-icon">🖼️</span>
+              <span class="logo-upload-label-text">Click to upload logo</span>
+              <span class="logo-upload-hint">PNG, JPG, SVG or WebP</span>
+            </label>
+          </div>
+          <div id="logo-has-file" style="${state.logoName ? '' : 'display:none'}">
+            <div class="logo-preview-wrap">
+              <span class="logo-preview-name">📎 ${escapeHtml(state.logoName)}</span>
+              <button class="btn btn-ghost btn-sm" id="logo-remove-btn">✕ Remove</button>
+            </div>
+            ${state.logoName && !state._logoFile ? `
+              <p style="font-size:12px;color:#b45309;padding:0 16px 12px;margin:0">
+                ⚠️ File not in memory — please re-upload the logo before downloading your ZIP, or it will be skipped.
+              </p>` : ''}
+          </div>
+        </div>
+        <p class="field-hint">Added to your context folder so AI tools can reference your brand visuals.</p>
+      </div>
+
       <div class="nav-row">
         <button class="btn btn-secondary" id="biz-back-btn">← Back</button>
         <button class="btn btn-primary" id="biz-next-btn" ${state.businessName.trim() ? '' : 'disabled'}>
@@ -39,13 +75,50 @@ export function renderBusinessNameCapture() {
 }
 
 export function bindBusinessNameCapture({ onBack, onNext }) {
-  const input = document.getElementById('biz-name-input');
-  const btn   = document.getElementById('biz-next-btn');
-  input?.addEventListener('input', () => {
-    state.businessName = input.value;
+  const nameInput    = document.getElementById('biz-name-input');
+  const websiteInput = document.getElementById('biz-website-input');
+  const fileInput    = document.getElementById('logo-file-input');
+  const btn          = document.getElementById('biz-next-btn');
+
+  nameInput?.addEventListener('input', () => {
+    state.businessName = nameInput.value;
     saveState();
-    if (btn) btn.disabled = !input.value.trim();
+    if (btn) btn.disabled = !nameInput.value.trim();
   });
+
+  websiteInput?.addEventListener('input', () => {
+    state.websiteUrl = websiteInput.value.trim();
+    saveState();
+  });
+
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+    state.logoName  = file.name;
+    state._logoFile = file;
+    saveState();
+    const noFile  = document.getElementById('logo-no-file');
+    const hasFile = document.getElementById('logo-has-file');
+    const nameEl  = hasFile?.querySelector('.logo-preview-name');
+    if (noFile)  noFile.style.display  = 'none';
+    if (hasFile) hasFile.style.display = '';
+    if (nameEl)  nameEl.textContent    = `📎 ${file.name}`;
+    document.getElementById('logo-remove-btn')?.addEventListener('click', handleLogoRemove);
+  });
+
+  document.getElementById('logo-remove-btn')?.addEventListener('click', handleLogoRemove);
+
+  function handleLogoRemove() {
+    state.logoName  = '';
+    state._logoFile = null;
+    if (fileInput) fileInput.value = '';
+    saveState();
+    const noFile  = document.getElementById('logo-no-file');
+    const hasFile = document.getElementById('logo-has-file');
+    if (noFile)  noFile.style.display  = '';
+    if (hasFile) hasFile.style.display = 'none';
+  }
+
   document.getElementById('biz-back-btn')?.addEventListener('click', onBack);
   btn?.addEventListener('click', () => {
     if (state.businessName.trim()) onNext();

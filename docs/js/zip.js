@@ -30,10 +30,14 @@ When in doubt about voice or facts, check the files rather than guessing.`;
 
 // ── README for inside the ZIP ─────────────────────────────
 export function generateReadme(businessName, generatedDate) {
-  const name = (businessName || 'Your Business').trim();
+  const name     = (businessName || 'Your Business').trim();
+  const logoLine = state.logoName
+    ? `\n    logo.${state.logoName.split('.').pop() || 'png'}               — Your brand logo` : '';
+  const websiteLine = state.websiteUrl
+    ? `\nWebsite: ${state.websiteUrl}` : '';
   return `# ${name} — AI Kit
 
-Generated: ${generatedDate}
+Generated: ${generatedDate}${websiteLine}
 Kit version: ${APP_VERSION}
 
 ---
@@ -47,7 +51,7 @@ your-business/
     BRAND_VOICE.md          — Tone, language rules, DO/DON'T guide
     AUDIENCE.md             — Customer personas and pain points (if generated)
     PRODUCTS_SERVICES.md    — What you sell, pricing, what not to promise (if generated)
-    COMPETITORS.md          — Market position and differentiators (if generated)
+    COMPETITORS.md          — Market position and differentiators (if generated)${logoLine}
   prompts/
     MASTER_PROMPT_files.md  — Short prompt for tools with file upload
     MASTER_PROMPT_inline.md — Self-contained prompt for tools without file upload
@@ -104,6 +108,15 @@ export async function downloadZip(onStatus) {
       zip.file(f.saveAs, state.files[f.id]);
     }
   });
+
+  // ── Logo ──────────────────────────────────────────────
+  if (state._logoFile) {
+    const ext      = state.logoName.split('.').pop() || 'png';
+    const logoPath = `your-business/context/logo.${ext}`;
+    const logoData = await state._logoFile.arrayBuffer();
+    zip.file(logoPath, logoData);
+    onStatus('Adding logo...');
+  }
 
   // ── Master prompt inline (AI-generated) ──────────────
   if (state.files['master-prompt']) {

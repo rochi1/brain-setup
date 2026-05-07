@@ -1,3 +1,5 @@
+import { state } from './state.js';
+
 export const RAW = 'https://raw.githubusercontent.com/rochi1/brain-setup/master/templates';
 
 // Context files worked through one at a time in the context builder.
@@ -9,18 +11,24 @@ export const CONTEXT_FILES = [
     whyItMatters: 'This is the foundation. Without it, AI tools guess who you are — and they guess wrong.',
     saveAs: 'your-business/context/BUSINESS_PROFILE.md',
     goodOutputLooks: 'Expect 1–2 pages of structured markdown with headings for mission, values, business model, and team. Every heading should have real content — no blank fields or "TBD".',
-    getPrompt: () => `I'm setting up a context file so AI tools understand my business.
-
-Please fetch the blank template from this URL:
+    getPrompt: () => {
+      const websiteLine = state.websiteUrl
+        ? `\nBefore asking any questions, please fetch this URL and read as much as you can from it: ${state.websiteUrl}\nUse what you find there to pre-fill any sections you can answer from the site — then only ask me about the gaps.\n`
+        : '';
+      return `I'm setting up a context file so AI tools understand my business.
+${websiteLine}
+Please also fetch the blank template from this URL:
 ${RAW}/context/BUSINESS_PROFILE.md
 
 Your job is to:
 
-1. Interview me — ask one question at a time and wait for my answer before continuing
-2. Cover every section in the template so no field is left empty
-3. Once I've answered everything, return the completed template with my answers filled in, preserving all headings and structure exactly
+1. Review any website content you fetched above and note what you can already answer
+2. Interview me — ask one question at a time and wait for my answer before continuing, skipping anything already covered by the website
+3. Cover every section in the template so no field is left empty
+4. Once I've answered everything, return the completed template with my answers filled in, preserving all headings and structure exactly
 
-Write all content in third person so it reads as a reference document, not a personal statement. Replace all italic placeholder text with real content. Do not add or remove sections.`,
+Write all content in third person so it reads as a reference document, not a personal statement. Replace all italic placeholder text with real content. Do not add or remove sections.`;
+    },
   },
   {
     id: 'brand-voice',

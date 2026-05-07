@@ -9,6 +9,8 @@ export const state = {
   os: /mac|iphone|ipad/i.test(navigator.userAgent) ? 'mac' : 'windows',
   brandVoiceMode: 'scratch',
   businessName: '',
+  websiteUrl: '',
+  logoName: '',      // filename only — actual File stored in state._logoFile (runtime only)
   files: {},         // { 'business-profile': '...pasted content...', ... }
   fileSubStep: -1,    // -1 = biz name screen; 0..n = file index
   filePhase: 0,        // 0 = prompt, 1 = paste
@@ -31,6 +33,8 @@ export function saveState() {
       os: state.os,
       brandVoiceMode: state.brandVoiceMode,
       businessName: state.businessName,
+      websiteUrl: state.websiteUrl,
+      logoName: state.logoName,
       files: state.files,
       fileSubStep: state.fileSubStep,
       filePhase: state.filePhase,
@@ -63,6 +67,8 @@ export function clearState() {
     step: 0,
     tool: null,
     businessName: '',
+    websiteUrl: '',
+    logoName: '',
     files: {},
     fileSubStep: -1,
     filePhase: 0,
