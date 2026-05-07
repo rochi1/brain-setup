@@ -248,7 +248,7 @@
     <!-- Controls -->
     <div class="controls-card">
       <label class="field-label" for="role-select">Role</label>
-      <select id="role-select" onchange="buildPrompt()">
+      <select id="role-select" onchange="onRoleChange()">
         <option value="">No role — task only</option>
         <optgroup label="Content &amp; Marketing">
           <option value="copywriter">Senior Copywriter</option>
@@ -270,32 +270,8 @@
       </select>
 
       <label class="field-label" for="task-select">Task</label>
-      <select id="task-select" onchange="buildPrompt()">
-        <option value="">Select a task…</option>
-        <optgroup label="Content &amp; Copy">
-          <option value="blog">Blog Post</option>
-          <option value="email-marketing">Email — Marketing / Campaign</option>
-          <option value="email-transactional">Email — Transactional / Operational</option>
-          <option value="social-post">Social Media Post</option>
-          <option value="website-copy">Website Copy — Page Section</option>
-          <option value="case-study">Case Study</option>
-        </optgroup>
-        <optgroup label="Research &amp; Analysis">
-          <option value="market-research">Market Research Summary</option>
-          <option value="competitor-analysis">Competitor Analysis</option>
-          <option value="feedback-analysis">Customer Feedback Analysis</option>
-        </optgroup>
-        <optgroup label="Internal &amp; Operations">
-          <option value="meeting-agenda">Meeting Agenda</option>
-          <option value="meeting-notes">Meeting Notes → Action Items</option>
-          <option value="job-description">Job Description</option>
-          <option value="sop">SOP (Standard Operating Procedure)</option>
-        </optgroup>
-        <optgroup label="Strategy">
-          <option value="swot">SWOT Analysis</option>
-          <option value="decision">Decision Framework</option>
-        </optgroup>
-      </select>
+      <select id="task-select" onchange="buildPrompt()"></select>
+      <div id="task-filter-hint" style="font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:16px;min-height:16px;"></div>
 
       <div class="toggle-row">
         <div>
@@ -689,6 +665,80 @@ Structure your response as:
 const MASTER_PLACEHOLDER = `[YOUR MASTER PROMPT]
 Paste the contents of your-business/prompts/MASTER_PROMPT.md here.
 ────────────────────────────────────────────────────────────────`;
+
+// ── Role → Task mapping ────────────────────────────────────
+// Keys match TASKS keys. Each role lists the tasks that make sense for it.
+const ROLE_TASKS = {
+  copywriter:  ['blog','email-marketing','email-transactional','social-post','website-copy','case-study'],
+  strategist:  ['blog','email-marketing','social-post','website-copy','case-study','market-research','competitor-analysis','feedback-analysis'],
+  social:      ['social-post','blog','website-copy','market-research','feedback-analysis'],
+  sales:       ['email-marketing','email-transactional','case-study','competitor-analysis','feedback-analysis','meeting-agenda','meeting-notes'],
+  csm:         ['email-transactional','meeting-agenda','meeting-notes','sop','feedback-analysis'],
+  analyst:     ['market-research','competitor-analysis','feedback-analysis','swot','decision','meeting-agenda','meeting-notes'],
+  advisor:     ['swot','decision','market-research','competitor-analysis','meeting-agenda'],
+  process:     ['sop','meeting-agenda','meeting-notes','job-description'],
+  data:        ['market-research','feedback-analysis','competitor-analysis','swot'],
+};
+
+// Flat ordered task list used to build the select
+const ALL_TASK_GROUPS = [
+  { label: 'Content & Copy',        ids: ['blog','email-marketing','email-transactional','social-post','website-copy','case-study'] },
+  { label: 'Research & Analysis',   ids: ['market-research','competitor-analysis','feedback-analysis'] },
+  { label: 'Internal & Operations', ids: ['meeting-agenda','meeting-notes','job-description','sop'] },
+  { label: 'Strategy',              ids: ['swot','decision'] },
+];
+
+function filterTasks() {
+  const roleId  = document.getElementById('role-select').value;
+  const taskSel = document.getElementById('task-select');
+  const hint    = document.getElementById('task-filter-hint');
+  const allowed = roleId ? new Set(ROLE_TASKS[roleId] || []) : null;
+  const prevVal = taskSel.value;
+
+  taskSel.innerHTML = '';
+  const blankOpt = document.createElement('option');
+  blankOpt.value = '';
+  blankOpt.textContent = allowed ? 'Select a relevant task…' : 'Select a task…';
+  taskSel.appendChild(blankOpt);
+
+  ALL_TASK_GROUPS.forEach(group => {
+    const visibleIds = allowed ? group.ids.filter(id => allowed.has(id)) : group.ids;
+    if (visibleIds.length === 0) return;
+    const og = document.createElement('optgroup');
+    og.label = group.label;
+    visibleIds.forEach(id => {
+      const opt = document.createElement('option');
+      opt.value = id;
+      opt.textContent = TASKS[id].name;
+      og.appendChild(opt);
+    });
+    taskSel.appendChild(og);
+  });
+
+  // Restore previous selection if still valid
+  if (prevVal && (!allowed || allowed.has(prevVal))) {
+    taskSel.value = prevVal;
+  }
+
+  // Hint text
+  if (allowed) {
+    const count = [...allowed].length;
+    const roleName = ROLES[roleId].name;
+    hint.textContent = `Showing ${count} tasks relevant to ${roleName}`;
+  } else {
+    hint.textContent = '';
+  }
+}
+
+function onRoleChange() {
+  filterTasks();
+  buildPrompt();
+}
+
+// Initialise task dropdown on load
+document.addEventListener('DOMContentLoaded', () => {
+  filterTasks();
+});
 
 // ── Build & render ────────────────────────────────────────
 function buildPrompt() {
