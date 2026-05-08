@@ -16,102 +16,63 @@ OAuth integration (Google Drive / Microsoft 365) is a **future phase** — not i
 
 ---
 
-## Phase 1 — Wizard + ZIP Download
+## Phase 1 — Wizard + ZIP Download ✅ Complete
 
-### 1.1 — Context Builder (AI-generated, paste-back flow)
+### Architecture decisions made
+- **ES Modules** — no build step; works on GitHub Pages; local dev via `npx serve docs`
+- **Paste-back flow** — keeps AI quality; app never calls an AI API
+- **Two master prompts** — `MASTER_PROMPT_files.md` (auto-generated, short) + `MASTER_PROMPT_inline.md` (AI-generated paste-back)
+- **Step numbers** — 0=welcome, 1=tool, 2=context-builder, 3=roles-tasks, 4=preview-zip, 5=upload, 6=done
+- **localStorage key** — `ai-kit-state-v2`
 
-> **Goal:** Keep the existing "generate a prompt → paste into your AI tool" flow — AI quality output is non-negotiable. Add a **paste-back step** after each file so the app captures the generated content and can include it in the ZIP.
+### 1.1 — Context Builder (AI-generated, paste-back flow) ✅
 
-The flow per context file:
-1. User answers a few short questions in the app (just enough to generate a good prompt)
-2. App produces a tailored prompt — user copies it and pastes into their AI tool of choice
-3. AI generates the full context file content
-4. User copies the AI output and pastes it back into the app
-5. App stores it — repeat for each file, then ZIP everything at the end
+- [x] **Business name capture screen** — with website URL field and logo upload field
+- [x] **Website URL injected into business-profile prompt** — AI fetches site first, skips already-answered questions
+- [x] **Logo upload** — PNG/JPG/SVG/WebP; stored in-memory as `File`, filename persisted in state; included as `your-business/context/logo.<ext>` in ZIP
+- [x] **Per-file prompt phase** — shows generated prompt, copy button, "I've got the output →" advance
+- [x] **Per-file paste phase** — textarea with "what good looks like" hint, confirm/skip, draft auto-saves as user types
+- [x] **Brand voice mode toggle** — "I have a brand guide" vs "starting from scratch" switches the prompt
+- [x] **All 6 context files + Master Prompt** — business-profile, brand-voice, ai-policy, audience, products, competitors, then master-prompt as final step
+- [x] **Optional/required badge** — per file; required files block download if missing
+- [x] **Why it matters** — one-line explanation on every file step
 
-- [ ] **Design the question set** — the minimum inputs needed to generate a high-quality prompt for each file
-  - `BUSINESS_PROFILE.md` — name, one-line description, industry, business model
-  - `BRAND_VOICE.md` — 3 tone words, 1–2 "we sound like / we don't sound like" examples
-  - `AUDIENCE.md` — who the primary customer is (role, company type, main problem)
-  - `PRODUCTS_SERVICES.md` — product/service names, rough pricing, 3 key features
-  - `COMPETITORS.md` — 2–3 competitor names, one differentiator
-- [ ] **Build multi-step form + prompt generator UI** — short input form → generated prompt to copy → textarea to paste AI output back
-- [ ] **Add paste-back textarea per file** — with a "looks good" confirm before moving to next step
-- [ ] **Basic validation** — check the paste-back field isn't empty before allowing progression
-- [ ] **Generate two Master Prompt versions** — in the final step, produce both:
-  - **`MASTER_PROMPT_inline.md`** — full self-contained prompt with all context inlined; user runs it in their AI tool and pastes result back; used for tools without file upload (Gemini Gems, one-off chats)
-  - **`MASTER_PROMPT_files.md`** — short file-reference prompt, generated automatically by the app (no AI needed, no paste-back); used for tools that support file upload (ChatGPT Projects, Claude Projects, Cursor, Copilot)
-- [ ] **Update the tool-selection step** — existing wizard already distinguishes file-upload vs non-file-upload tools; use this to tell the user which Master Prompt to use for their chosen tool
-- [ ] **Preview screen** — show all collected files before download, allow re-doing any individual step
+### 1.2 — UX & Quality of Life ✅
 
-### 1.2 — UX & Quality of Life
+- [x] **localStorage persistence** — full state saved after every interaction; resume banner on welcome screen
+- [x] **Start over button** — visible on all steps 1–6; confirmation dialog before clearing
+- [x] **Per-file redo buttons** — preview screen has "Redo" per file, routes back to that file's prompt phase
+- [x] **Shareable URL** — encodes tool + business name as query params; shown on preview screen with copy button
+- [x] **Version stamp in ZIP** — README inside ZIP includes generated date + kit version
+- [x] **"Why it matters" tooltip** on every context file step
 
-- [ ] **localStorage persistence** — save all form inputs and paste-back content to `localStorage` after each step; on load, detect and restore an in-progress session with a "resume where you left off" prompt; clear on successful ZIP download
-- [ ] **Per-file regenerate button** — on the preview screen, each file has a "Redo this file" button that takes the user back to that file's generate → paste-back step without resetting the rest
-- [ ] **Context tooltip on each step** — a one-sentence "why this matters" explanation on every paste-back step so users understand what each file is for before confirming
-- [ ] **Shareable pre-fill URL** — after the basic inputs (business name, industry, tool choice) are entered, generate a URL with those values as query params; user can copy and share it so a colleague can pick up from that point and complete the rest
-- [ ] **Version stamp in the ZIP** — include date generated and wizard version number in the README inside the ZIP
-- [ ] **Start over button** — visible throughout the wizard; clears all `localStorage` state and returns to step 0; requires a confirmation prompt so users don't lose progress accidentally
+### 1.3 — ZIP Download ✅
 
-### 1.3 — ZIP Download
+- [x] **JSZip 3.10.1 + FileSaver.js 2.0.5** — loaded via CDN
+- [x] **ZIP structure** mirrors `your-business/` folder layout
+- [x] **Logo included** in `your-business/context/` if uploaded
+- [x] **Template files fetched** from GitHub raw URLs at download time (ROLES.md, TASK_LIBRARY.md, DATA_RULES.md)
+- [x] **ZIP named** from business name, e.g. `acme-corp-ai-kit.zip`
+- [x] **Download status messages** — "Building ZIP…", "Fetching templates…", "✅ ZIP downloaded!"
 
-> _Previously 1.2_
+### 1.4 — README Inside the ZIP ✅
 
-> **Goal:** One button at the end of the wizard produces a complete, ready-to-use ZIP file in the browser.
+- [x] **README.md generated** covering: what's in the package, which master prompt to use per tool, how to load into AI tool, how to update files
+- [x] **Website URL and logo noted** in README when present
 
-- [ ] **Add JSZip library** — include via CDN (no build step needed, stays static)
-- [ ] **Define ZIP structure** — mirror the `your-business/` folder layout:
-  ```
-  your-business/
-    context/
-      BUSINESS_PROFILE.md
-      BRAND_VOICE.md
-      AUDIENCE.md
-      PRODUCTS_SERVICES.md
-      COMPETITORS.md
-    prompts/
-      MASTER_PROMPT_inline.md  ← AI-generated, paste-back (for tools without file upload)
-      MASTER_PROMPT_files.md   ← auto-generated by app, no paste-back (for tools with file upload)
-      ROLES.md                 ← template copy + any custom roles from step 1.4
-      TASK_LIBRARY.md          ← template copy + any custom tasks from step 1.4
-    governance/
-      AI_POLICY.md             ← AI-generated (paste-back, same as context files)
-      DATA_RULES.md            ← template copy
-  README.md                    ← next steps guide (see 1.3)
-  ```
-- [ ] **Trigger download** — `zip.generateAsync({ type: 'blob' })` → `saveAs()` via FileSaver.js
-- [ ] **Name the ZIP** — use their business name from the form, e.g. `acme-ai-kit.zip`
+### 1.5 — Custom Roles & Tasks ✅
 
-### 1.5 — Custom Roles & Tasks (Optional Step)
+- [x] **Roles gate** — yes/no choice; "No" skips to tasks gate
+- [x] **Role creation flow** — name + description + context fields → prompt generated → paste-back → "+ Add another role"
+- [x] **Tasks gate** — separate yes/no
+- [x] **Task creation flow** — name + description + input fields → prompt generated → paste-back → "+ Add another task"
+- [x] **Appended to template files** — custom roles/tasks appended under `## Custom Roles` / `## Custom Tasks` headings in ZIP
 
-> **Goal:** After the core context files are done, offer an optional step where the user can define custom AI roles and tasks specific to their business. Same paste-back pattern — generate a prompt, run it in their AI tool, paste the result back.
+### 1.6 — Tool selection + upload instructions ✅
 
-- [ ] **Ask if they want custom roles** — yes/no choice; if no, skip this step entirely
-- [ ] **Role creation flow** — for each role:
-  - Ask: role name, what this person does, what AI tasks they'd use it for
-  - Generate a prompt that produces a well-structured role definition block (matching the `ROLES.md` format)
-  - User pastes prompt into AI, pastes result back
-  - Allow adding multiple roles, with a "+ Add another role" option
-- [ ] **Ask if they want custom tasks** — separate yes/no
-- [ ] **Task creation flow** — for each task:
-  - Ask: task name, which role it belongs to, what the task does, any specific constraints
-  - Generate a prompt that produces a reusable task prompt block (matching `TASK_LIBRARY.md` format)
-  - User pastes prompt into AI, pastes result back
-  - Allow multiple tasks
-- [ ] **Append to template files** \u2014 custom roles/tasks are appended to the bottom of the template `ROLES.md` and `TASK_LIBRARY.md` in the ZIP; templates will be edited to end cleanly so appending works without any delimiter logic
-
----
-
-### 1.4 — README Inside the ZIP
-
-> **Goal:** Every person who downloads the ZIP gets a clear, standalone guide telling them exactly what to do next — including how to set up their intranet hub.
-
-- [ ] **Write `README.md` content** covering:
-  - What's in the ZIP and what each file is for
-  - How to load files into ChatGPT / Claude / Gemini / Copilot
-  - How to set up the AI Hub page (links to Phase 2 guides — see below)
-  - How to update files when the business changes
-  - Who to contact for help (placeholder for their internal owner)
+- [x] **Tool grid** — ChatGPT, Claude, Gemini, Copilot, Cursor, Windsurf, Other
+- [x] **`supportsFileUpload` flag** per tool — determines which master prompt recommended
+- [x] **Upload step** — tool-specific instructions for loading files; file-reference master prompt shown with copy button for upload-capable tools
 
 ---
 
