@@ -46,6 +46,8 @@ folio/
     ├── guide-master-prompt.md        ← How to use the Master Prompt
     ├── guide-roles.md                ← Role library explained
     └── guide-keeping-current.md     ← Maintenance cadence and update process
+    └── google-sites-hub.md          ← Step-by-step: set up your AI hub on Google Sites
+    └── sharepoint-hub.md            ← Step-by-step: set up your AI hub on SharePoint
 ```
 
 ---
