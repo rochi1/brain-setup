@@ -66,6 +66,8 @@ your-business/
     guide-master-prompt.md  — How to use the Master Prompt
     guide-roles.md          — What each AI role does and when to use it
     guide-keeping-current.md — When and how to update your context files
+    google-sites-hub.md     — Step-by-step guide to setting up on Google Sites
+    sharepoint-hub.md       — Step-by-step guide to setting up on SharePoint
 README.md                   — This file
 \`\`\`
 
@@ -177,6 +179,8 @@ export async function downloadZip(onStatus) {
     'your-business/guides/guide-master-prompt.md',
     'your-business/guides/guide-roles.md',
     'your-business/guides/guide-keeping-current.md',
+    'your-business/guides/google-sites-hub.md',
+    'your-business/guides/sharepoint-hub.md',
   ];
   guideFiles.forEach(path => {
     if (templates[path]) zip.file(path, templates[path]);

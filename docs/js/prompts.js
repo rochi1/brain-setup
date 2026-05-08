@@ -217,4 +217,6 @@ export const ZIP_TEMPLATE_URLS = {
   'your-business/guides/guide-master-prompt.md':        `${GUIDES_RAW}/guide-master-prompt.md`,
   'your-business/guides/guide-roles.md':                `${GUIDES_RAW}/guide-roles.md`,
   'your-business/guides/guide-keeping-current.md':      `${GUIDES_RAW}/guide-keeping-current.md`,
+  'your-business/guides/google-sites-hub.md':           `${GUIDES_RAW}/google-sites-hub.md`,
+  'your-business/guides/sharepoint-hub.md':             `${GUIDES_RAW}/sharepoint-hub.md`,
 };
