@@ -97,7 +97,7 @@ The AI Hub page should contain these sections regardless of platform:
 
 ### 2.2 — Google Sites Guide
 
-- [ ] **Write step-by-step Google Sites setup guide** covering:
+- [x] **Write step-by-step Google Sites setup guide** covering:
   - Creating a new site in Google Sites
   - Using the recommended page structure (section-by-section instructions)
   - Embedding Google Drive files for download (context files, policy doc)
@@ -107,11 +107,11 @@ The AI Hub page should contain these sections regardless of platform:
 - [ ] **Create a Google Sites page template** — build a public example site that can be duplicated
   - Note: Google Sites cannot be provisioned via API. The template must be duplicated manually.
   - Host the example at a known URL and document it
-- [ ] **Store guide as** `docs/guides/google-sites-hub.md` (rendered in the main app as a step)
+- [x] **Store guide as** `docs/guides/google-sites-hub.md` (rendered in `docs/guides.html`)
 
 ### 2.3 — SharePoint Guide
 
-- [ ] **Write step-by-step SharePoint setup guide** covering:
+- [x] **Write step-by-step SharePoint setup guide** covering:
   - Creating a Communication Site in SharePoint
   - Recommended page layout using SharePoint web parts
   - Uploading files to a Document Library (the generated ZIP contents)
@@ -121,7 +121,7 @@ The AI Hub page should contain these sections regardless of platform:
   - How editors add new prompts — adding a row to the SharePoint List, no code required
 - [ ] **Create SharePoint site template (PnP template)** — exportable `.xml` / PnP provisioning template that IT admins can import
   - This is optional but high value for enterprise customers
-- [ ] **Store guide as** `docs/guides/sharepoint-hub.md`
+- [x] **Store guide as** `docs/guides/sharepoint-hub.md`
 
 ### 2.4 — Prompt Library as Editable Content
 
@@ -174,7 +174,7 @@ Ship as `.md` files inside the ZIP at `your-business/guides/`. Users upload to G
 | 1 | Should the hub guide live as a wizard step or a separate page? | **Separate static page** (`docs/guides.html`) — same pattern as `library.html`; wizard is linear setup, guides are reference material people return to |
 | 2 | Do we ship the Google Sites guide first, or SharePoint first? | **Google Sites first** — but both are in scope; order doesn't matter as long as both ship |
 | 3 | What's the minimum viable prompt library — how many prompts ship in the template? | **Seed with existing roles/tasks in `library.html`/`script.js`** — users must be able to add more prompts without touching code (localStorage-backed add form on the library page) |
-| 4 | Should training guides be `.md` files inside the ZIP, or web pages in the app? | **ZIP only** — files are uploaded to Google Drive or OneDrive; duplicating them in the app creates two maintenance surfaces. No `docs/guides/` renderer needed. |
+| 4 | Should training guides be `.md` files inside the ZIP, or web pages in the app? | **Both** — guides live as `.md` files (single source of truth) and are rendered as web pages on `docs/guides.html` via marked.js. Also included in the ZIP so users can upload to Drive/OneDrive. |
 | 5 | Who is the primary target — Google Workspace orgs or Microsoft 365 orgs? | **Both equally** — Google Sites guide and SharePoint guide ship in the same phase; platform-specific prompt library templates (Sheets + SP List) both required |
 
 ---
