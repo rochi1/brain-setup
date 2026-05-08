@@ -60,6 +60,12 @@ your-business/
   governance/
     AI_POLICY.md            — Internal rules for AI use
     DATA_RULES.md           — Data handling guidelines
+  guides/
+    guide-ai-policy.md      — Plain-English explanation of your AI policy
+    guide-writing-prompts.md — How to write effective prompts
+    guide-master-prompt.md  — How to use the Master Prompt
+    guide-roles.md          — What each AI role does and when to use it
+    guide-keeping-current.md — When and how to update your context files
 README.md                   — This file
 \`\`\`
 
@@ -163,6 +169,18 @@ export async function downloadZip(onStatus) {
   if (templates['your-business/governance/DATA_RULES.md']) {
     zip.file('your-business/governance/DATA_RULES.md', templates['your-business/governance/DATA_RULES.md']);
   }
+
+  // ── Training guides ───────────────────────────────────
+  const guideFiles = [
+    'your-business/guides/guide-ai-policy.md',
+    'your-business/guides/guide-writing-prompts.md',
+    'your-business/guides/guide-master-prompt.md',
+    'your-business/guides/guide-roles.md',
+    'your-business/guides/guide-keeping-current.md',
+  ];
+  guideFiles.forEach(path => {
+    if (templates[path]) zip.file(path, templates[path]);
+  });
 
   // ── README ────────────────────────────────────────────
   zip.file('README.md', generateReadme(bizName, dateStr));

@@ -205,9 +205,16 @@ ${voice}${extras}`;
   },
 };
 
+const GUIDES_RAW = 'https://raw.githubusercontent.com/rochi1/brain-setup/master/docs/guides';
+
 // Template files fetched from GitHub and included in the ZIP as-is (before custom appends)
 export const ZIP_TEMPLATE_URLS = {
-  'your-business/prompts/ROLES.md':        'https://raw.githubusercontent.com/rochi1/brain-setup/master/prompts/ROLES.md',
-  'your-business/prompts/TASK_LIBRARY.md': 'https://raw.githubusercontent.com/rochi1/brain-setup/master/prompts/TASK_LIBRARY.md',
-  'your-business/governance/DATA_RULES.md': `${RAW}/governance/DATA_RULES.md`,
+  'your-business/prompts/ROLES.md':                     'https://raw.githubusercontent.com/rochi1/brain-setup/master/prompts/ROLES.md',
+  'your-business/prompts/TASK_LIBRARY.md':              'https://raw.githubusercontent.com/rochi1/brain-setup/master/prompts/TASK_LIBRARY.md',
+  'your-business/governance/DATA_RULES.md':             `${RAW}/governance/DATA_RULES.md`,
+  'your-business/guides/guide-ai-policy.md':            `${GUIDES_RAW}/guide-ai-policy.md`,
+  'your-business/guides/guide-writing-prompts.md':      `${GUIDES_RAW}/guide-writing-prompts.md`,
+  'your-business/guides/guide-master-prompt.md':        `${GUIDES_RAW}/guide-master-prompt.md`,
+  'your-business/guides/guide-roles.md':                `${GUIDES_RAW}/guide-roles.md`,
+  'your-business/guides/guide-keeping-current.md':      `${GUIDES_RAW}/guide-keeping-current.md`,
 };

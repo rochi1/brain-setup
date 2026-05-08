@@ -18,15 +18,98 @@
       .library-layout { grid-template-columns: 1fr; }
     }
 
+    .sidebar-col {
+      position: sticky;
+      top: 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-self: start;
+    }
+
     .controls-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
       box-shadow: var(--shadow);
-      position: sticky;
-      top: 72px;
     }
+
+    .add-prompt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .add-prompt-toggle {
+      width: 100%;
+      background: none;
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .15s, background .15s;
+    }
+    .add-prompt-toggle:hover { border-color: var(--accent); background: rgba(99,102,241,.05); }
+
+    .cp-field { margin-bottom: 14px; }
+    .cp-field input[type=text],
+    .cp-field textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--surface);
+      box-sizing: border-box;
+      resize: vertical;
+      transition: border-color .15s;
+    }
+    .cp-field input[type=text]:focus,
+    .cp-field textarea:focus { outline: none; border-color: var(--accent); }
+
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+    .btn-save {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-save:hover { background: var(--accent-dark); }
+    .btn-cancel {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .btn-cancel:hover { border-color: #aaa; color: var(--text); }
+    .btn-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 12px;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .btn-link-danger { color: var(--error, #e53935); }
+    .cp-form-inner { margin-top: 16px; }
 
     .field-label {
       display: block;
@@ -245,7 +328,8 @@
 
   <div class="library-layout">
 
-    <!-- Controls -->
+    <!-- Controls + Add prompt -->
+    <div class="sidebar-col">
     <div class="controls-card">
       <label class="field-label" for="role-select">Role</label>
       <select id="role-select" onchange="onRoleChange()">
@@ -285,6 +369,56 @@
       </div>
     </div>
 
+    <!-- Add a prompt panel -->
+    <div class="add-prompt-card">
+      <button class="add-prompt-toggle" onclick="toggleAddForm()">+ Add a prompt</button>
+      <div id="add-prompt-form" hidden>
+        <form id="cp-form" class="cp-form-inner" onsubmit="saveCustomPrompt(event)">
+          <div class="cp-field">
+            <label class="field-label" for="cp-role">Role (optional)</label>
+            <select id="cp-role">
+              <option value="">Any role</option>
+              <optgroup label="Content &amp; Marketing">
+                <option value="copywriter">Senior Copywriter</option>
+                <option value="strategist">Content Strategist</option>
+                <option value="social">Social Media Manager</option>
+              </optgroup>
+              <optgroup label="Sales &amp; Customer">
+                <option value="sales">Sales Consultant</option>
+                <option value="csm">Customer Success Manager</option>
+              </optgroup>
+              <optgroup label="Strategy &amp; Analysis">
+                <option value="analyst">Business Analyst</option>
+                <option value="advisor">Strategic Advisor</option>
+              </optgroup>
+              <optgroup label="Operations">
+                <option value="process">Process Designer</option>
+                <option value="data">Data Analyst</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="cp-field">
+            <label class="field-label" for="cp-name">Task name <span style="color:var(--error,#e53935)">*</span></label>
+            <input type="text" id="cp-name" placeholder="e.g. Partner proposal email" required />
+          </div>
+          <div class="cp-field">
+            <label class="field-label" for="cp-text">Prompt text <span style="color:var(--error,#e53935)">*</span></label>
+            <textarea id="cp-text" rows="6" placeholder="Write your prompt here..." required></textarea>
+          </div>
+          <div class="cp-field">
+            <label class="field-label" for="cp-tags">Tags (optional)</label>
+            <input type="text" id="cp-tags" placeholder="e.g. email, partner, outreach" />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" onclick="cancelAddForm()">Cancel</button>
+            <button type="submit" class="btn-save">Save prompt</button>
+          </div>
+        </form>
+      </div>
+      <div id="custom-summary"></div>
+    </div>
+    </div><!-- /sidebar-col -->
+
     <!-- Output -->
     <div id="output-panel">
       <div class="output-card">
@@ -299,6 +433,84 @@
 </div>
 
 <script>
+// ── Custom prompts (localStorage) ────────────────────────
+const CUSTOM_KEY = 'ai-kit-custom-prompts';
+
+function loadCustom() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveCustom(arr) {
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(arr));
+  renderCustomSummary();
+}
+
+function renderCustomSummary() {
+  const el = document.getElementById('custom-summary');
+  if (!el) return;
+  const customs = loadCustom();
+  if (customs.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <div style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">${customs.length} custom prompt${customs.length !== 1 ? 's' : ''} saved</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-link" onclick="exportCustomCsv()">Export CSV</button>
+        <button class="btn-link btn-link-danger" onclick="clearCustomPrompts()">Clear all</button>
+      </div>
+    </div>`;
+}
+
+function toggleAddForm() {
+  const form = document.getElementById('add-prompt-form');
+  const btn  = document.querySelector('.add-prompt-toggle');
+  form.hidden = !form.hidden;
+  btn.textContent = form.hidden ? '+ Add a prompt' : '✕ Close';
+}
+
+function cancelAddForm() {
+  document.getElementById('add-prompt-form').hidden = true;
+  document.querySelector('.add-prompt-toggle').textContent = '+ Add a prompt';
+  document.getElementById('cp-form').reset();
+}
+
+function saveCustomPrompt(e) {
+  e.preventDefault();
+  const role = document.getElementById('cp-role').value;
+  const name = document.getElementById('cp-name').value.trim();
+  const text = document.getElementById('cp-text').value.trim();
+  const tags = document.getElementById('cp-tags').value.trim();
+  if (!name || !text) return;
+  const arr = loadCustom();
+  arr.push({ id: 'cust_' + Date.now(), name, role, text, tags, addedAt: new Date().toISOString() });
+  saveCustom(arr);
+  cancelAddForm();
+  filterTasks();
+}
+
+function exportCustomCsv() {
+  const customs = loadCustom();
+  if (!customs.length) return;
+  const header = 'Role,Task Name,Prompt Text,Tags,Added';
+  const rows = customs.map(p =>
+    [p.role || 'Any', p.name, p.text, p.tags || '', (p.addedAt || '').split('T')[0]]
+      .map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')
+  );
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href: url, download: 'custom-prompts.csv' });
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function clearCustomPrompts() {
+  if (!confirm('Remove all custom prompts? This cannot be undone.')) return;
+  localStorage.removeItem(CUSTOM_KEY);
+  renderCustomSummary();
+  filterTasks();
+  buildPrompt();
+}
+
 // ── Data ──────────────────────────────────────────────────
 
 const ROLES = {
@@ -715,16 +927,32 @@ function filterTasks() {
     taskSel.appendChild(og);
   });
 
+  // Custom prompts — show those matching selected role (or tagged for any role)
+  const customs = loadCustom().filter(p => !roleId || p.role === '' || p.role === roleId);
+  if (customs.length > 0) {
+    const og = document.createElement('optgroup');
+    og.label = 'Custom Prompts';
+    customs.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.name;
+      og.appendChild(opt);
+    });
+    taskSel.appendChild(og);
+  }
+
   // Restore previous selection if still valid
-  if (prevVal && (!allowed || allowed.has(prevVal))) {
+  const allCustomIds = new Set(loadCustom().map(p => p.id));
+  const prevIsCustom = prevVal && prevVal.startsWith('cust_') && allCustomIds.has(prevVal);
+  if (prevVal && (prevIsCustom || !allowed || allowed.has(prevVal))) {
     taskSel.value = prevVal;
   }
 
   // Hint text
   if (allowed) {
-    const count = [...allowed].length;
+    const count = [...allowed].length + customs.length;
     const roleName = ROLES[roleId].name;
-    hint.textContent = `Showing ${count} tasks relevant to ${roleName}`;
+    hint.textContent = `Showing ${count} task${count !== 1 ? 's' : ''} relevant to ${roleName}`;
   } else {
     hint.textContent = '';
   }
@@ -735,9 +963,10 @@ function onRoleChange() {
   buildPrompt();
 }
 
-// Initialise task dropdown on load
+// Initialise task dropdown and custom summary on load
 document.addEventListener('DOMContentLoaded', () => {
   filterTasks();
+  renderCustomSummary();
 });
 
 // ── Build & render ────────────────────────────────────────
@@ -759,7 +988,8 @@ function buildPrompt() {
   }
 
   const role = ROLES[roleId];
-  const task = TASKS[taskId];
+  const customEntry = taskId.startsWith('cust_') ? loadCustom().find(p => p.id === taskId) : null;
+  const task = TASKS[taskId] || (customEntry ? { name: customEntry.name, category: customEntry.tags || 'Custom', text: customEntry.text } : null);
 
   const sections = [];
   if (inclMaster) sections.push({ label: 'Master Prompt', pill: 'pill-master', text: MASTER_PLACEHOLDER });

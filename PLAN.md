@@ -127,25 +127,31 @@ The AI Hub page should contain these sections regardless of platform:
 
 > **Goal:** Editors should be able to add prompts and roles without touching code or markdown files.
 
-**Google Workspace option:**
-- [ ] Build a **Google Sheets prompt library template** — columns: Role, Task Name, Prompt Text, Tags, Date Added, Added By
-- [ ] Write instructions for embedding the sheet as a table on the Google Site
-- [ ] Editors add a row → the sheet updates → the embedded view updates automatically
+**In-app (library.html) — works for all platforms:**
+- [x] **Add Prompt form** on `library.html` — Role (dropdown + free text), Task Name, Prompt Text, Tags; saves to localStorage; persists across sessions
+- [x] **Custom prompts displayed** alongside seed prompts in the same role/task cascade
+- [x] **Export custom prompts** — button copies all user-added prompts as a CSV file for pasting into Sheets or SP List
+- [x] **Clear custom prompts** — with confirmation dialog
 
-**Microsoft 365 option:**
-- [ ] Build a **SharePoint List schema** — same columns as above
+**Google Workspace option (for hub page):**
+- [ ] Build a **Google Sheets prompt library template** — columns: Role, Task Name, Prompt Text, Tags, Date Added, Added By; pre-populated with seed prompts
+- [ ] Write instructions for publishing the sheet as a web page embedded in the Google Site
+- [ ] Editors add a row → embedded view updates automatically
+
+**Microsoft 365 option (for hub page):**
+- [ ] Build a **SharePoint List schema** — same columns; documented as a JSON schema or manual setup steps
 - [ ] The list powers the prompt section of the SharePoint page via the List web part
 - [ ] Editors add a list item → it appears on the page immediately, no publishing needed
 
 ### 2.5 — Training Guides (Content to Write)
 
-These are written guides included in the ZIP and linked from the hub page:
+Ship as `.md` files inside the ZIP at `your-business/guides/`. Users upload to Google Drive or OneDrive and link from their hub page. **Not** duplicated as in-app web pages.
 
-- [ ] **AI Policy explained** — plain English summary of `AI_POLICY.md` with context on why each rule exists
-- [ ] **How to write a good prompt** — short practical guide, business-specific examples
-- [ ] **How to use the Master Prompt** — what it is, how to paste it, what happens next
-- [ ] **Role guide** — what each defined role does, when to use it, example outputs
-- [ ] **Keeping your context up to date** — when and how to refresh the files
+- [x] **`guide-ai-policy.md`** — plain English summary of `AI_POLICY.md` with context on why each rule exists
+- [x] **`guide-writing-prompts.md`** — short practical guide, business-specific examples
+- [x] **`guide-master-prompt.md`** — what it is, how to paste it, what happens next
+- [x] **`guide-roles.md`** — what each defined role does, when to use it, example outputs
+- [x] **`guide-keeping-current.md`** — when and how to refresh the files
 
 ---
 
@@ -165,11 +171,11 @@ These are written guides included in the ZIP and linked from the hub page:
 
 | # | Question | Decision |
 |---|---|---|
-| 1 | Should the in-app form replace the existing wizard entirely, or run alongside it as a separate flow? | TBD |
-| 2 | Do we ship the Google Sites guide first, or SharePoint first? | TBD |
-| 3 | What's the minimum viable prompt library — how many prompts ship in the template? | TBD |
-| 4 | Should training guides be `.md` files inside the ZIP, or web pages in the app? | TBD |
-| 5 | Who is the primary target — Google Workspace orgs or Microsoft 365 orgs? | TBD |
+| 1 | Should the hub guide live as a wizard step or a separate page? | **Separate static page** (`docs/guides.html`) — same pattern as `library.html`; wizard is linear setup, guides are reference material people return to |
+| 2 | Do we ship the Google Sites guide first, or SharePoint first? | **Google Sites first** — but both are in scope; order doesn't matter as long as both ship |
+| 3 | What's the minimum viable prompt library — how many prompts ship in the template? | **Seed with existing roles/tasks in `library.html`/`script.js`** — users must be able to add more prompts without touching code (localStorage-backed add form on the library page) |
+| 4 | Should training guides be `.md` files inside the ZIP, or web pages in the app? | **ZIP only** — files are uploaded to Google Drive or OneDrive; duplicating them in the app creates two maintenance surfaces. No `docs/guides/` renderer needed. |
+| 5 | Who is the primary target — Google Workspace orgs or Microsoft 365 orgs? | **Both equally** — Google Sites guide and SharePoint guide ship in the same phase; platform-specific prompt library templates (Sheets + SP List) both required |
 
 ---
 
@@ -181,9 +187,17 @@ Week 3:    Phase 1.2 — UX & quality of life (localStorage, regenerate, tooltip
 Week 4:    Phase 1.3 — ZIP assembly + download
 Week 5:    Phase 1.4 — README inside ZIP / write next-steps content
 Week 6:    Phase 1.5 — Custom roles & tasks step
-Week 7:    Phase 2.1 — Define hub structure
-Week 8:    Phase 2.2 — Google Sites guide + example site
-Week 9:    Phase 2.3 — SharePoint guide
-Week 10:   Phase 2.4 — Prompt library templates (Sheets + SP List)
-Week 11:   Phase 2.5 — Write training guides
+Week 7:    Phase 2.1 — Define hub structure ✅ (decisions locked May 2026)
+Week 8:    Phase 2.5 — Write training guides (.md files for ZIP)
+Week 9:    Phase 2.4 — Prompt library: add-prompt form on library.html + Sheets/SP List schemas
+Week 10:   Phase 2.2 — Google Sites guide + manually build example site
+Week 11:   Phase 2.3 — SharePoint guide + PnP template (stretch)
 ```
+
+### Phase 2 architecture decisions
+
+- **Training guides** ship as `.md` inside the ZIP only — users upload the ZIP to Drive/OneDrive; no duplicate in-app rendering
+- **Hub guides** (`google-sites-hub.md`, `sharepoint-hub.md`) ship in ZIP and are also written to `docs/guides/` as source — rendered at `docs/guides.html` (standalone page, same pattern as `library.html`)
+- **Prompt library additions** — `library.html` gets a localStorage-backed "Add prompt" form so non-technical editors can add prompts in-browser without touching `script.js`; prompts persist across sessions
+- **Prompt library seed data** — existing roles/tasks already in `script.js` are the baseline; no additional seed prompts needed before launch
+- **ZIP additions for Phase 2** — training guides go into `your-business/guides/` folder inside the ZIP
