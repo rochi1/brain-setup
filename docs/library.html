@@ -111,6 +111,103 @@
     .btn-link-danger { color: var(--error, #e53935); }
     .cp-form-inner { margin-top: 16px; }
 
+    /* add-prompt tabs */
+    .cp-tabs {
+      display: flex;
+      gap: 0;
+      margin-top: 14px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .cp-tab {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      margin-bottom: -1.5px;
+      transition: color .15s, border-color .15s;
+      text-align: center;
+    }
+    .cp-tab:hover { color: var(--text); }
+    .cp-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* generate flow */
+    .gen-step { margin-top: 14px; }
+    .gen-step-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .gen-step-num {
+      width: 18px; height: 18px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .gen-prompt-box {
+      background: var(--bg, #f8f8fb);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 120px;
+      overflow-y: auto;
+      font-family: inherit;
+      margin-bottom: 8px;
+    }
+    .btn-copy-gen {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background .15s;
+    }
+    .btn-copy-gen:hover { background: var(--accent-dark); }
+    .btn-copy-gen.copied { background: var(--success); }
+    .gen-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .gen-divider::before, .gen-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
     .field-label {
       display: block;
       font-size: 12px;
@@ -373,47 +470,111 @@
     <div class="add-prompt-card">
       <button class="add-prompt-toggle" onclick="toggleAddForm()">+ Add a prompt</button>
       <div id="add-prompt-form" hidden>
-        <form id="cp-form" class="cp-form-inner" onsubmit="saveCustomPrompt(event)">
-          <div class="cp-field">
-            <label class="field-label" for="cp-role">Role (optional)</label>
-            <select id="cp-role">
-              <option value="">Any role</option>
-              <optgroup label="Content &amp; Marketing">
-                <option value="copywriter">Senior Copywriter</option>
-                <option value="strategist">Content Strategist</option>
-                <option value="social">Social Media Manager</option>
-              </optgroup>
-              <optgroup label="Sales &amp; Customer">
-                <option value="sales">Sales Consultant</option>
-                <option value="csm">Customer Success Manager</option>
-              </optgroup>
-              <optgroup label="Strategy &amp; Analysis">
-                <option value="analyst">Business Analyst</option>
-                <option value="advisor">Strategic Advisor</option>
-              </optgroup>
-              <optgroup label="Operations">
-                <option value="process">Process Designer</option>
-                <option value="data">Data Analyst</option>
-              </optgroup>
-            </select>
+
+        <!-- Tabs -->
+        <div class="cp-tabs">
+          <button class="cp-tab active" id="tab-generate" onclick="switchCpTab('generate')">Generate with AI</button>
+          <button class="cp-tab" id="tab-manual" onclick="switchCpTab('manual')">Write manually</button>
+        </div>
+
+        <!-- Generate tab -->
+        <div id="cp-panel-generate">
+          <div class="gen-step">
+            <div class="gen-step-label"><span class="gen-step-num">1</span> Copy this prompt into your AI tool</div>
+            <div class="gen-prompt-box" id="gen-prompt-preview"></div>
+            <button class="btn-copy-gen" id="btn-copy-gen" onclick="copyGenPrompt()">📋 Copy prompt</button>
           </div>
-          <div class="cp-field">
-            <label class="field-label" for="cp-name">Task name <span style="color:var(--error,#e53935)">*</span></label>
-            <input type="text" id="cp-name" placeholder="e.g. Partner proposal email" required />
+          <div class="gen-divider">paste the AI’s output below</div>
+          <div class="gen-step">
+            <div class="gen-step-label"><span class="gen-step-num">2</span> Paste the prompt text here</div>
+            <form id="cp-form-gen" onsubmit="saveCustomPromptGen(event)">
+              <div class="cp-field">
+                <textarea id="cp-text-gen" rows="5" placeholder="Paste the prompt the AI wrote for you…" required style="margin-top:0"></textarea>
+              </div>
+              <div class="cp-field">
+                <label class="field-label" for="cp-name-gen">Task name <span style="color:var(--error,#e53935)">*</span></label>
+                <input type="text" id="cp-name-gen" placeholder="e.g. Partner proposal email" required />
+              </div>
+              <div class="cp-field">
+                <label class="field-label" for="cp-role-gen">Role (optional)</label>
+                <select id="cp-role-gen">
+                  <option value="">Any role</option>
+                  <optgroup label="Content &amp; Marketing">
+                    <option value="copywriter">Senior Copywriter</option>
+                    <option value="strategist">Content Strategist</option>
+                    <option value="social">Social Media Manager</option>
+                  </optgroup>
+                  <optgroup label="Sales &amp; Customer">
+                    <option value="sales">Sales Consultant</option>
+                    <option value="csm">Customer Success Manager</option>
+                  </optgroup>
+                  <optgroup label="Strategy &amp; Analysis">
+                    <option value="analyst">Business Analyst</option>
+                    <option value="advisor">Strategic Advisor</option>
+                  </optgroup>
+                  <optgroup label="Operations">
+                    <option value="process">Process Designer</option>
+                    <option value="data">Data Analyst</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="cp-field">
+                <label class="field-label" for="cp-tags-gen">Tags (optional)</label>
+                <input type="text" id="cp-tags-gen" placeholder="e.g. email, partner, outreach" />
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="cancelAddForm()">Cancel</button>
+                <button type="submit" class="btn-save">Save prompt</button>
+              </div>
+            </form>
           </div>
-          <div class="cp-field">
-            <label class="field-label" for="cp-text">Prompt text <span style="color:var(--error,#e53935)">*</span></label>
-            <textarea id="cp-text" rows="6" placeholder="Write your prompt here..." required></textarea>
-          </div>
-          <div class="cp-field">
-            <label class="field-label" for="cp-tags">Tags (optional)</label>
-            <input type="text" id="cp-tags" placeholder="e.g. email, partner, outreach" />
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-cancel" onclick="cancelAddForm()">Cancel</button>
-            <button type="submit" class="btn-save">Save prompt</button>
-          </div>
-        </form>
+        </div>
+
+        <!-- Manual tab -->
+        <div id="cp-panel-manual" hidden>
+          <form id="cp-form" class="cp-form-inner" onsubmit="saveCustomPrompt(event)">
+            <div class="cp-field">
+              <label class="field-label" for="cp-role">Role (optional)</label>
+              <select id="cp-role">
+                <option value="">Any role</option>
+                <optgroup label="Content &amp; Marketing">
+                  <option value="copywriter">Senior Copywriter</option>
+                  <option value="strategist">Content Strategist</option>
+                  <option value="social">Social Media Manager</option>
+                </optgroup>
+                <optgroup label="Sales &amp; Customer">
+                  <option value="sales">Sales Consultant</option>
+                  <option value="csm">Customer Success Manager</option>
+                </optgroup>
+                <optgroup label="Strategy &amp; Analysis">
+                  <option value="analyst">Business Analyst</option>
+                  <option value="advisor">Strategic Advisor</option>
+                </optgroup>
+                <optgroup label="Operations">
+                  <option value="process">Process Designer</option>
+                  <option value="data">Data Analyst</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="cp-field">
+              <label class="field-label" for="cp-name">Task name <span style="color:var(--error,#e53935)">*</span></label>
+              <input type="text" id="cp-name" placeholder="e.g. Partner proposal email" required />
+            </div>
+            <div class="cp-field">
+              <label class="field-label" for="cp-text">Prompt text <span style="color:var(--error,#e53935)">*</span></label>
+              <textarea id="cp-text" rows="6" placeholder="Write your prompt here…" required></textarea>
+            </div>
+            <div class="cp-field">
+              <label class="field-label" for="cp-tags">Tags (optional)</label>
+              <input type="text" id="cp-tags" placeholder="e.g. email, partner, outreach" />
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" onclick="cancelAddForm()">Cancel</button>
+              <button type="submit" class="btn-save">Save prompt</button>
+            </div>
+          </form>
+        </div>
+
       </div>
       <div id="custom-summary"></div>
     </div>
@@ -435,6 +596,30 @@
 <script>
 // ── Custom prompts (localStorage) ────────────────────────
 const CUSTOM_KEY = 'ai-kit-custom-prompts';
+
+const GENERATE_PROMPT = `I need to create a reusable task prompt for my team's AI prompt library. The prompt will be used alongside a loaded business context (master prompt already applied).
+
+Please interview me to build it. Ask one question at a time and wait for my answer.
+
+1. What task or situation is this prompt for? Describe it in plain English.
+2. What inputs does the person running this task need to supply? (e.g. a topic, a piece of content, a customer name, a data set) List everything the AI needs from them.
+3. What should the finished output look like? (format, length, structure, number of options)
+4. What should the AI be careful to avoid or flag when doing this task?
+5. Is there anything specific to how our business or team works that the AI should keep in mind?
+
+Once I've answered all the questions, produce a finished prompt using exactly this format — ready to copy and paste:
+
+\`\`\`
+[Clear instruction of what the AI should do]
+
+[PLACEHOLDER 1 — descriptive label]: []
+[PLACEHOLDER 2 — descriptive label]: []
+[Add as many input placeholders as needed]
+
+[Any specific instruction about output format, what to avoid, or how to structure the response]
+\`\`\`
+
+The prompt should use [BRACKETED LABELS] for every piece of information the user needs to fill in. No explanation needed — just the finished prompt block.`;
 
 function loadCustom() {
   try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); }
@@ -465,13 +650,33 @@ function toggleAddForm() {
   const form = document.getElementById('add-prompt-form');
   const btn  = document.querySelector('.add-prompt-toggle');
   form.hidden = !form.hidden;
-  btn.textContent = form.hidden ? '+ Add a prompt' : '✕ Close';
+  btn.textContent = form.hidden ? '+ Add a prompt' : '× Close';
+  if (!form.hidden) {
+    document.getElementById('gen-prompt-preview').textContent = GENERATE_PROMPT;
+  }
+}
+
+function switchCpTab(tab) {
+  document.getElementById('cp-panel-generate').hidden = tab !== 'generate';
+  document.getElementById('cp-panel-manual').hidden   = tab !== 'manual';
+  document.getElementById('tab-generate').classList.toggle('active', tab === 'generate');
+  document.getElementById('tab-manual').classList.toggle('active',   tab === 'manual');
+}
+
+function copyGenPrompt() {
+  const btn = document.getElementById('btn-copy-gen');
+  navigator.clipboard.writeText(GENERATE_PROMPT).then(() => {
+    btn.innerHTML = '\u2713 Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = '\ud83d\udccb Copy prompt'; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
 function cancelAddForm() {
   document.getElementById('add-prompt-form').hidden = true;
   document.querySelector('.add-prompt-toggle').textContent = '+ Add a prompt';
   document.getElementById('cp-form').reset();
+  document.getElementById('cp-form-gen').reset();
 }
 
 function saveCustomPrompt(e) {
@@ -480,6 +685,20 @@ function saveCustomPrompt(e) {
   const name = document.getElementById('cp-name').value.trim();
   const text = document.getElementById('cp-text').value.trim();
   const tags = document.getElementById('cp-tags').value.trim();
+  if (!name || !text) return;
+  const arr = loadCustom();
+  arr.push({ id: 'cust_' + Date.now(), name, role, text, tags, addedAt: new Date().toISOString() });
+  saveCustom(arr);
+  cancelAddForm();
+  filterTasks();
+}
+
+function saveCustomPromptGen(e) {
+  e.preventDefault();
+  const role = document.getElementById('cp-role-gen').value;
+  const name = document.getElementById('cp-name-gen').value.trim();
+  const text = document.getElementById('cp-text-gen').value.trim();
+  const tags = document.getElementById('cp-tags-gen').value.trim();
   if (!name || !text) return;
   const arr = loadCustom();
   arr.push({ id: 'cust_' + Date.now(), name, role, text, tags, addedAt: new Date().toISOString() });
