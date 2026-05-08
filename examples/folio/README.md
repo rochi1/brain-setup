@@ -24,15 +24,28 @@ Folio was chosen as the example because it's a concrete, realistic business that
 
 ```
 folio/
-├── README.md                    ← You are here
+├── README.md                         ← You are here
 ├── context/
 │   ├── BUSINESS_PROFILE.md
 │   ├── BRAND_VOICE.md
 │   ├── AUDIENCE.md
 │   ├── PRODUCTS_SERVICES.md
-│   └── COMPETITORS.md
-└── prompts/
-    └── MASTER_PROMPT.md
+│   ├── COMPETITORS.md
+│   └── logo.svg                      ← Sample brand logo
+├── prompts/
+│   ├── MASTER_PROMPT_files.md        ← Short version for tools with file upload
+│   ├── MASTER_PROMPT_inline.md       ← Self-contained version for any tool
+│   ├── ROLES.md                      ← AI role definitions
+│   └── TASK_LIBRARY.md               ← Reusable task prompts
+├── governance/
+│   ├── AI_POLICY.md                  ← Internal AI use policy
+│   └── DATA_RULES.md                 ← Data classification framework
+└── guides/
+    ├── guide-ai-policy.md            ← Plain-English policy explainer
+    ├── guide-writing-prompts.md      ← How to write effective prompts
+    ├── guide-master-prompt.md        ← How to use the Master Prompt
+    ├── guide-roles.md                ← Role library explained
+    └── guide-keeping-current.md     ← Maintenance cadence and update process
 ```
 
 ---
@@ -45,4 +58,10 @@ folio/
 
 **In AUDIENCE.md:** The "how they talk" and "real customer quotes" sections are the most underrated parts of the entire system. When AI uses your customers' own language, they notice.
 
-**In MASTER_PROMPT.md:** See how the context files compress into a single usable prompt. This is what gets pasted at the start of every session.
+**In MASTER_PROMPT_inline.md:** See how the context files compress into a single usable prompt. This is what gets pasted at the start of every session for tools without file upload.
+
+**In MASTER_PROMPT_files.md:** The short-form version for tools that support file uploads (ChatGPT Projects, Claude Projects, Cursor). Upload the context files alongside it.
+
+**In governance/:** A realistic AI policy and data rules document showing the level of specificity a growth-stage team needs — concrete tool names, real use cases, named roles, not placeholders.
+
+**In guides/:** Platform-agnostic training guides written in Folio's voice — ready to link from an AI Hub page or share with the team directly.
